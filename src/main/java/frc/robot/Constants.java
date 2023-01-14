@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -16,6 +20,17 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public final class Constants {
   public static final int DRIVER_CONTROLLER_PORT = 0;
-  public static final int MECANUM_TOP_LEFT_PORT = 0;
+
+  public static final int MECANUM_FRONT_LEFT_PORT = 0;
+  public static final int MECANUM_FRONT_RIGHT_PORT = 0;
+  public static final int MECANUM_BACK_LEFT_PORT = 0;
+  public static final int MECANUM_BACK_RIGHT_PORT = 0;
+  
   public static final SPI.Port GYRO_PORT = SPI.Port.kMXP;
+
+  public static enum MotorType {
+    TALON_FX,
+    SIM_DEVICE,
+    VICTOR;
+  }
 }

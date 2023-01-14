@@ -22,7 +22,7 @@ public class GyroCommand extends CommandBase {
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        System.out.println(gyroSubsystem.getXAxis());
+        System.out.println("Yaw: " + gyroSubsystem.getAngle() + ", X: " + gyroSubsystem.getXAxis() + ", Y: " + gyroSubsystem.getZAxis());
     }
 
     @Override
