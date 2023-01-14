@@ -7,7 +7,9 @@ package frc.robot;
 import static frc.robot.Constants.*;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -57,9 +59,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getGyroCommand() {
     // An example command will be run in autonomous
-    //return Autos.exampleAuto(m_exampleSubsystem);
-    return null;
+    return new GyroCommand(new GyroSubsystem());
   }
 }

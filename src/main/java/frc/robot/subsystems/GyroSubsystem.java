@@ -18,6 +18,19 @@ public class GyroSubsystem extends SubsystemBase {
         gyro.calibrate();
     }
 
+    public double getXAxis(){
+        return gyro.getGyroAngleX();
+    }
+
+    public double getYAxis(){
+        return gyro.getGyroAngleY();
+    }
+    public double getZAxis(){
+        return gyro.getGyroAngleZ();
+    }
+
+
+
 
 
 }
