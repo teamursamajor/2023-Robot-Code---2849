@@ -7,7 +7,10 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 
 /**
@@ -27,6 +30,16 @@ public final class Constants {
   public static final int MECANUM_BACK_RIGHT_PORT = 0;
   
   public static final SPI.Port GYRO_PORT = SPI.Port.kMXP;
+
+
+  static Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
+  static Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
+  static Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
+  static Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+
+  public static MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
+  m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+  );
 
   public static enum MotorType {
     TALON_FX,
