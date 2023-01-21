@@ -11,7 +11,7 @@ public class GyroSubsystem extends SubsystemBase {
     private ADIS16448_IMU gyro;
 
     public GyroSubsystem(){
-        gyro = new ADIS16448_IMU(IMUAxis.kY, GYRO_PORT, CalibrationTime._1s);
+        gyro = new ADIS16448_IMU(IMUAxis.kY, SPI.Port.kMXP, CalibrationTime._1s);
     }
 
     public void calibrate(){

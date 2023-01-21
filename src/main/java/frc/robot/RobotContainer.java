@@ -5,69 +5,81 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
+
+import frc.robot.commands.AutoBalence;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.GyroCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  //private final GyroSubsystem GYRO_SUBSYSTEM = new GyroSubsystem();
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // private final GyroSubsystem GYRO_SUBSYSTEM = new GyroSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(MotorType.VICTOR);
 
-
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController XBOX_CONTROLLER =
-      new CommandXboxController(DRIVER_CONTROLLER_PORT);
+  private final CommandXboxController XBOX_CONTROLLER = new CommandXboxController(DRIVER_CONTROLLER_PORT);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the trigger bindings
 
-        m_robotDrive.setDefaultCommand(
+    m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    -XBOX_CONTROLLER.getLeftY(),
-                    -XBOX_CONTROLLER.getLeftX(),
-                    -XBOX_CONTROLLER.getRightX()
-                    ),
+            () -> m_robotDrive.drive(
+                -XBOX_CONTROLLER.getLeftX(),
+                XBOX_CONTROLLER.getRightX(),
+                -XBOX_CONTROLLER.getLeftY()),
             m_robotDrive));
-    
+
     configureBindings();
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
+    // pressed,
     // cancelling on release.
-    //XBOX_CONTROLLER.a().whileTrue(new GyroCommand(GYRO_SUBSYSTEM));
+
+    XBOX_CONTROLLER.a().whileTrue(new AutoBalence(m_robotDrive));
+
+    // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }
 
   /**

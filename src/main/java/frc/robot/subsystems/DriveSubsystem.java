@@ -3,6 +3,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.I2C;
+
 
 import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -23,6 +28,8 @@ public class DriveSubsystem extends SubsystemBase {
     private double frontLeft, frontRight, backLeft, backRight;
 
     private final MecanumDrive m_drive;
+
+    AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
     // private final PWMSparkMax m_frontLeft = new
     // PWMSparkMax(MECANUM_FRONT_LEFT_PORT);
@@ -52,8 +59,8 @@ public class DriveSubsystem extends SubsystemBase {
                 motorFrontRightVictor = new WPI_VictorSPX(2);
                 motorBackLeftVictor = new WPI_VictorSPX(0);
                 motorBackRightVictor = new WPI_VictorSPX(1);
-                motorFrontLeftVictor.setInverted(true);
-                motorFrontRightVictor.setInverted(true);
+                // motorFrontLeftVictor.setInverted(true);
+                // motorFrontRightVictor.setInverted(true);
                 break;
         }
 
@@ -69,6 +76,26 @@ public class DriveSubsystem extends SubsystemBase {
         // m_kinematics.toWheelSpeeds(chassisSpeed);
         m_drive.driveCartesian(leftRight, fowardBack, rotation);
 
+    }
+
+    public float getAnglePitch(){
+        return ahrs.getPitch();
+    }
+
+    public float getAngleRoll(){
+        return ahrs.getRoll();
+    }
+
+    public boolean isCalibrating() {
+        return ahrs.isCalibrating();
+    }
+
+    public boolean isConnected() {
+        return ahrs.isConnected();
+    }
+
+    public void calibrate(){
+        ahrs.calibrate();
     }
 
 }

@@ -29,8 +29,6 @@ public final class Constants {
   public static final int MECANUM_BACK_LEFT_PORT = 0;
   public static final int MECANUM_BACK_RIGHT_PORT = 0;
   
-  public static final SPI.Port GYRO_PORT = SPI.Port.kMXP;
-
 
   static Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
   static Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
