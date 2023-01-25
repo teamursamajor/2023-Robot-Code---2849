@@ -38,10 +38,4 @@ public final class Constants {
   public static MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
   m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
   );
-
-  public static enum MotorType {
-    TALON_FX,
-    SIM_DEVICE,
-    VICTOR;
-  }
 }

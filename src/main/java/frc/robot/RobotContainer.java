@@ -6,7 +6,7 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
-import frc.robot.commands.AutoBalence;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,7 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   // private final GyroSubsystem GYRO_SUBSYSTEM = new GyroSubsystem();
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem(MotorType.VICTOR);
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController XBOX_CONTROLLER = new CommandXboxController(DRIVER_CONTROLLER_PORT);
@@ -77,7 +77,7 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    XBOX_CONTROLLER.a().whileTrue(new AutoBalence(m_robotDrive));
+    XBOX_CONTROLLER.a().whileTrue(new AutoBalance(m_robotDrive));
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

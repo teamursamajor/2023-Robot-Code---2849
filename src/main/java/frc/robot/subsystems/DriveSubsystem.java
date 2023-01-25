@@ -8,8 +8,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C;
 
-
-import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -20,11 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
-    private TalonFX motorFrontLeftTalonFX, motorFrontRightTalonFX, motorBackLeftTalonFX, motorBackRightTalonFX;
-    private SimDevice motorFrontLeftSimDevice, motorFrontRightSimDevice, motorBackLeftSimDevice,
-            motorBackRightSimDevice;
-    private WPI_VictorSPX motorFrontLeftVictor, motorFrontRightVictor, motorBackLeftVictor, motorBackRightVictor;
-    private MotorType motorType;
+    private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
     private double frontLeft, frontRight, backLeft, backRight;
 
     private final MecanumDrive m_drive;
@@ -40,32 +34,16 @@ public class DriveSubsystem extends SubsystemBase {
     // private final PWMSparkMax m_rearRight = new
     // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
 
-    public DriveSubsystem(MotorType motor) {
-        switch (motor) {
-            case TALON_FX:
-                motorFrontLeftTalonFX = new TalonFX(MECANUM_FRONT_LEFT_PORT);
-                motorFrontRightTalonFX = new TalonFX(MECANUM_FRONT_RIGHT_PORT);
-                motorBackRightTalonFX = new TalonFX(MECANUM_BACK_RIGHT_PORT);
-                motorBackLeftTalonFX = new TalonFX(MECANUM_BACK_LEFT_PORT);
-                break;
-            case SIM_DEVICE:
-                motorFrontLeftSimDevice = new SimDevice(MECANUM_FRONT_LEFT_PORT);
-                motorFrontRightSimDevice = new SimDevice(MECANUM_FRONT_RIGHT_PORT);
-                motorBackLeftSimDevice = new SimDevice(MECANUM_BACK_LEFT_PORT);
-                motorBackRightSimDevice = new SimDevice(MECANUM_BACK_RIGHT_PORT);
-                break;
-            case VICTOR:
-                motorFrontLeftVictor = new WPI_VictorSPX(3);
-                motorFrontRightVictor = new WPI_VictorSPX(2);
-                motorBackLeftVictor = new WPI_VictorSPX(0);
-                motorBackRightVictor = new WPI_VictorSPX(1);
+    public DriveSubsystem() {
+        
+        motorFrontLeft = new WPI_VictorSPX(MECANUM_FRONT_LEFT_PORT);
+        motorFrontRight = new WPI_VictorSPX(MECANUM_FRONT_RIGHT_PORT);
+        motorBackLeft = new WPI_VictorSPX(MECANUM_BACK_LEFT_PORT);
+        motorBackRight = new WPI_VictorSPX(MECANUM_BACK_RIGHT_PORT);
                 // motorFrontLeftVictor.setInverted(true);
                 // motorFrontRightVictor.setInverted(true);
-                break;
-        }
-
-        m_drive = new MecanumDrive(motorFrontLeftVictor, motorBackLeftVictor, motorFrontRightVictor,
-                motorBackRightVictor);
+        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
+                motorBackRight);
 
     }
 
