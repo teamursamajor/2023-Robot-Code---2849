@@ -48,9 +48,9 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new RunCommand(
             () -> m_robotDrive.drive(
+                XBOX_CONTROLLER.getLeftY(),
                 -XBOX_CONTROLLER.getLeftX(),
-                XBOX_CONTROLLER.getRightX(),
-                -XBOX_CONTROLLER.getLeftY()),
+                -XBOX_CONTROLLER.getRightX()),
             m_robotDrive));
 
     configureBindings();
@@ -77,7 +77,7 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    XBOX_CONTROLLER.a().whileTrue(new AutoBalance(m_robotDrive));
+    XBOX_CONTROLLER.a().onTrue(new AutoBalance(m_robotDrive));
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

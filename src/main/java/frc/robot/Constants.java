@@ -24,10 +24,6 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 public final class Constants {
   public static final int DRIVER_CONTROLLER_PORT = 0;
 
-  public static final int MECANUM_FRONT_LEFT_PORT = 0;
-  public static final int MECANUM_FRONT_RIGHT_PORT = 0;
-  public static final int MECANUM_BACK_LEFT_PORT = 0;
-  public static final int MECANUM_BACK_RIGHT_PORT = 0;
   
 
   static Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);

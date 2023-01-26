@@ -1,18 +1,11 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.I2C;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -36,14 +29,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DriveSubsystem() {
         
-        motorFrontLeft = new WPI_VictorSPX(MECANUM_FRONT_LEFT_PORT);
-        motorFrontRight = new WPI_VictorSPX(MECANUM_FRONT_RIGHT_PORT);
-        motorBackLeft = new WPI_VictorSPX(MECANUM_BACK_LEFT_PORT);
-        motorBackRight = new WPI_VictorSPX(MECANUM_BACK_RIGHT_PORT);
-                // motorFrontLeftVictor.setInverted(true);
-                // motorFrontRightVictor.setInverted(true);
+        motorFrontLeft = new WPI_VictorSPX(3);
+        motorFrontRight = new WPI_VictorSPX(2);
+        motorBackLeft = new WPI_VictorSPX(0);
+        motorBackRight = new WPI_VictorSPX(1);
+        motorFrontLeft.setInverted(true);
+        motorFrontRight.setInverted(true);
+        motorBackRight.setInverted(true);
         m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
                 motorBackRight);
+        m_drive.setSafetyEnabled(false);
 
     }
 
@@ -52,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
         // rotation);
         // MecanumDriveWheelSpeeds wheelSpeeds =
         // m_kinematics.toWheelSpeeds(chassisSpeed);
-        m_drive.driveCartesian(leftRight, fowardBack, rotation);
+        m_drive.driveCartesian(fowardBack, leftRight, rotation);
 
     }
 
