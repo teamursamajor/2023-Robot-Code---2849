@@ -24,20 +24,9 @@ public class ArmSubsystem extends SubsystemBase {
         winchMotor = new TalonFX(0); // REPLACE
     }
 
-    public Servo getClawServo() {
-        return clawServo;
+    public void setMotor(double speed){
+        winchMotor.ser
     }
 
-    public LimitSwitchSource maxWinch() {
-        return maxLimit;
-    }
 
-    public LimitSwitchSource minWinch() {
-        return minLimit;
-    }
-
-    public TalonFX winchMotor  () {
-        return winchMotor; 
-    }
-    
 }
