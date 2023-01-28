@@ -12,13 +12,32 @@ public class ArmSubsystem extends SubsystemBase {
     private Servo clawServo;
     
     // this will somehow tell us if we are overextending the arm
-    LimitSwitchSource winchLimit;
+    private LimitSwitchSource maxLimit;
+    private LimitSwitchSource minLimit;
     // this will control the arm extention
     private TalonFX winchMotor;
 
     public ArmSubsystem() {
         clawServo = new Servo(0); // REPLACE
-        winchLimit = LimitSwitchSource.RemoteTalon;
+        maxLimit = LimitSwitchSource.RemoteTalon;
+        minLimit = LimitSwitchSource.RemoteTalon;
         winchMotor = new TalonFX(0); // REPLACE
     }
+
+    public Servo getClawServo() {
+        return clawServo;
+    }
+
+    public LimitSwitchSource maxWinch() {
+        return maxLimit;
+    }
+
+    public LimitSwitchSource minWinch() {
+        return minLimit;
+    }
+
+    public TalonFX winchMotor  () {
+        return winchMotor; 
+    }
+    
 }
