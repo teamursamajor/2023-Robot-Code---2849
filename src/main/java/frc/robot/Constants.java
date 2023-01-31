@@ -4,15 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import edu.wpi.first.hal.SimDevice;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -22,20 +13,5 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final int DRIVER_CONTROLLER_PORT = 0;
-
-  public static final int MECANUM_FRONT_LEFT_PORT = 0;
-  public static final int MECANUM_FRONT_RIGHT_PORT = 0;
-  public static final int MECANUM_BACK_LEFT_PORT = 0;
-  public static final int MECANUM_BACK_RIGHT_PORT = 0;
   
-
-  static Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
-  static Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  static Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  static Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
-
-  public static MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
-  m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-  );
 }
