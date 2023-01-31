@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -28,19 +29,19 @@ public class DriveSubsystem extends SubsystemBase {
     // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
 
     public DriveSubsystem() {
-        
         motorFrontLeft = new WPI_VictorSPX(3);
         motorFrontRight = new WPI_VictorSPX(2);
         motorBackLeft = new WPI_VictorSPX(0);
         motorBackRight = new WPI_VictorSPX(1);
-        motorFrontLeft.setInverted(true);
-        motorBackLeft.setInverted(true);
+        //motorFrontLeft.setInverted(true);
+        //motorBackLeft.setInverted(true);
+
         m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
                 motorBackRight);
         m_drive.setSafetyEnabled(false);
-
+        zeroYaw();
     }
-
+//-30
     public void drive(double fowardBack, double leftRight, double rotation) {
         // ChassisSpeeds chassisSpeed = new ChassisSpeeds(fowardBack, leftRight,
         // rotation);
@@ -50,8 +51,21 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
+    public void driveField(double fowardBack, double leftRight, double rotation) {
+        System.out.println(getAngleYaw());
+        m_drive.driveCartesian(fowardBack, leftRight, rotation, new Rotation2d(getAngleYaw()));
+    }
+
     public float getAnglePitch(){
         return ahrs.getPitch();
+    }
+
+    public void zeroYaw() {
+        ahrs.zeroYaw();
+    }
+
+    public float getAngleYaw() {
+        return ahrs.getYaw();
     }
 
     public float getAngleRoll(){
@@ -68,6 +82,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void calibrate(){
         ahrs.calibrate();
+    }
+
+    public boolean isCalibrate(){
+        return ahrs.isCalibrating();
     }
 
 }

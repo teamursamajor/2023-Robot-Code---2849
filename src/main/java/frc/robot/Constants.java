@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -24,8 +25,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 public final class Constants {
   public static final int DRIVER_CONTROLLER_PORT = 0;
 
-  
-
+  public static final CommandXboxController XBOX_CONTROLLER = new CommandXboxController(DRIVER_CONTROLLER_PORT);
   static Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
   static Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
   static Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);

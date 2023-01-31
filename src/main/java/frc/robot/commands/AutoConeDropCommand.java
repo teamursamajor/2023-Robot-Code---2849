@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class ConeDrop extends CommandBase {
+public class AutoConeDropCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     double armLength;  //horizontal length of arm when arm is fully extended
     double xValue;  //limelght deteced x value
@@ -18,7 +18,7 @@ public class ConeDrop extends CommandBase {
     private final DriveSubsystem DRIVE_SUBSYSTEM;
     private final LimeLightSubsystem LIME_LIGHT; 
 
-    public ConeDrop(DriveSubsystem driveSubsystem, LimeLightSubsystem limeLightSubsystem, boolean isHigh){
+    public AutoConeDropCommand(DriveSubsystem driveSubsystem, LimeLightSubsystem limeLightSubsystem, boolean isHigh){
         this.isHigh = isHigh;  //true is going for high pole, flase if going for mid
         DRIVE_SUBSYSTEM = driveSubsystem;
         LIME_LIGHT = limeLightSubsystem;
