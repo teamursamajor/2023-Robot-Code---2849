@@ -28,8 +28,8 @@ public class ManualArmCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        super.execute();
-        ARM_SUBSYSTEM.setMotor(speed);
+        //ARM_SUBSYSTEM.setMotor(speed);
+        ARM_SUBSYSTEM.setMotorVictor(speed);
         //System.out.println("Bottom Limit:"+ ARM_SUBSYSTEM.getBottomSwitch() + "Top Limit: "+ ARM_SUBSYSTEM.getTopSwitch());
 
     }
