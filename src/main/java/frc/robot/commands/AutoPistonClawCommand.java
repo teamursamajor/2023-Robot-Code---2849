@@ -5,12 +5,10 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class AutoPistonClawCommand extends CommandBase{
     boolean isFinished = false;
-    boolean position;
     private final ArmSubsystem ARM_SUBSYSTEM;
     
-    public AutoPistonClawCommand(ArmSubsystem ARM_SUBSYSTEM,boolean position){
+    public AutoPistonClawCommand(ArmSubsystem ARM_SUBSYSTEM){
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
-        this.position = position;
         addRequirements(ARM_SUBSYSTEM);
     }
     @Override
@@ -21,7 +19,7 @@ public class AutoPistonClawCommand extends CommandBase{
 
     @Override
     public void execute() {
-        ARM_SUBSYSTEM.setClawSol(position);
+        ARM_SUBSYSTEM.toggleClawSol();
         isFinished = true;
     }
 
