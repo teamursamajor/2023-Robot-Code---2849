@@ -34,6 +34,7 @@ public class ArmSubsystem extends SubsystemBase {
         winchMotor.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
+        setClawSol(true);
     }
 
     public void setMotor(double speed){
