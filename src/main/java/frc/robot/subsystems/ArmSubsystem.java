@@ -6,12 +6,19 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
+    private DoubleSolenoid clawSol = new DoubleSolenoid(1,PneumaticsModuleType.REVPH, 0,15);
     private Servo clawServo =  new Servo(0);
     private TalonFX winchMotor = new TalonFX(0); // REPLACE
     
@@ -20,10 +27,13 @@ public class ArmSubsystem extends SubsystemBase {
     private DigitalInput bottomLimitSwitch = new DigitalInput(1); //CHANGE PORT IT IS A FILLER
     // this will control the arm extention
 
+    Compressor comp = new Compressor(1, PneumaticsModuleType.REVPH);
 
     public ArmSubsystem() {
         clawServo.setBounds(2, 1.8, 1.5, 1.2, 1);
         winchMotor.setNeutralMode(NeutralMode.Brake);
+        System.out.println(clawSol.isFwdSolenoidDisabled());
+        comp.enableDigital();
     }
 
     public void setMotor(double speed){
@@ -41,6 +51,26 @@ public class ArmSubsystem extends SubsystemBase {
 
     public boolean getBottomSwitch() {
         return bottomLimitSwitch.get();
+    }
+
+    public void setClawSol(boolean closeOrNot){
+        clawSol.set(closeOrNot ? kForward : kReverse);
+        System.out.println(clawSol.get());
+    }
+
+    public void turnOffClawSol(){
+        clawSol.set(kOff);
+    }
+
+    public boolean getClawSol(){
+        return true;
+    }
+
+    public void toggleClawSol(){
+        clawSol.toggle();
+    }
+    public void setClawSol(){
+        clawSol.set(kForward);
     }
 
 }

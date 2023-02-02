@@ -6,9 +6,10 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
+import frc.robot.commands.AutoPistonClawCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.ManualArmCommand;
-import frc.robot.commands.ManualClawCommand;
+import frc.robot.commands.ManualActuatorClawCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -32,7 +33,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   // private final GyroSubsystem GYRO_SUBSYSTEM = new GyroSubsystem();
-  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  // public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -77,11 +78,13 @@ public class RobotContainer {
     //right trigger --> toggle arm
     
 
-    XBOX_CONTROLLER.a().onTrue(new AutoBalanceCommand(m_robotDrive));
+    // XBOX_CONTROLLER.a().onTrue(new AutoBalanceCommand(m_robotDrive));
     XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem, false));
     XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem, true));
-    XBOX_CONTROLLER.povRight().onTrue(new ManualClawCommand(m_ArmSubsystem, false));
-    XBOX_CONTROLLER.povLeft().onTrue(new ManualClawCommand(m_ArmSubsystem, true));
+    XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem,false));
+    XBOX_CONTROLLER.a().onTrue(new AutoPistonClawCommand(m_ArmSubsystem,true));
+    
+    
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }
 
