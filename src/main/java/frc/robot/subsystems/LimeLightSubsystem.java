@@ -84,7 +84,8 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   public double getX() {
     var result = camera.getLatestResult();
-    result.getBestTarget().
+    //result.getBestTarget().
+    return 0.0;
   }
 
   private double getOffsetAngle(){
