@@ -1,5 +1,10 @@
 package frc.robot.subsystems;
 
+import java.util.List;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -11,6 +16,8 @@ public class LimeLightSubsystem extends SubsystemBase {
     double heightHigh = 106; // the height of the high pole in cm
     double heightOfCam = 30; //the hieght of the limelight camera to the ground, CHNAGE
     double camAngle = 15.0; // angles of limelight camera, CHNAGE
+    private PhotonCamera camera = new PhotonCamera("photonvision");
+    private List<PhotonTrackedTarget> targetList;
     
 
 
@@ -44,7 +51,7 @@ public class LimeLightSubsystem extends SubsystemBase {
 
 
 
-      public double getX() {
+     /*  public double getX() {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("photonvision");
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry tv = table.getEntry("tv");
@@ -59,6 +66,25 @@ public class LimeLightSubsystem extends SubsystemBase {
     
         SmartDashboard.putNumber("LimelightX", x);
         return x;
+  } */
+
+  //yaw -> x
+  //Pitch -> y
+  // distance from camera hiehgt, target height and camera pitch(radians)
+  //choose target based of its y
+  public boolean checkTargets() {
+    var result = camera.getLatestResult();
+    targetList = result.getTargets();
+    return (result.getTargets().size() >= 2);
+  }
+
+  public void assignMid(){
+    
+  }
+
+  public double getX() {
+    var result = camera.getLatestResult();
+    result.getBestTarget().
   }
 
   private double getOffsetAngle(){
