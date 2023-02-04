@@ -38,20 +38,20 @@ public class AutoArmCommand extends CommandBase {
         minLimitUpdated = ARM_SUBSYSTEM.getBottomSwitch();
         maxLimitUpdated = ARM_SUBSYSTEM.getTopSwitch();
         if(!inAPosition && !minLimitUpdated){
-            ARM_SUBSYSTEM.setMotor(-.15);
+            ARM_SUBSYSTEM.setMotorVictor(-.15);
         }else if(!inAPosition && minLimitUpdated){
             isFinished = true;
         }else if(goingUp){
             if(maxLimitUpdated){
                 isFinished = true;
             }else{
-                ARM_SUBSYSTEM.setMotor(.25);
+                ARM_SUBSYSTEM.setMotorVictor(.25);
             }
         }else if(!goingUp){
             if(minLimitUpdated){
                 isFinished = true;
             }else{
-                ARM_SUBSYSTEM.setMotor(-.15);
+                ARM_SUBSYSTEM.setMotorVictor(-.15);
             }
         }
 
@@ -59,7 +59,7 @@ public class AutoArmCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        ARM_SUBSYSTEM.setMotor(0.0);
+        ARM_SUBSYSTEM.setMotorVictor(0.0);
         // brake motor so arm does not fall back down
     }
 

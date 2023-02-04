@@ -16,13 +16,12 @@ public class ManualArmCommand extends CommandBase {
     
     @Override
     public void initialize() {
-        ARM_SUBSYSTEM.setMotor(0.0);
+        ARM_SUBSYSTEM.setMotorVictor(0.0);
         if(isUp){
             speed = .25;
         }else{
             speed = -.10;
         }
-        super.initialize();
     }
 
     @Override
@@ -37,7 +36,6 @@ public class ManualArmCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-        super.end(interrupted);
         ARM_SUBSYSTEM.setMotor(0.0);
 
     }
