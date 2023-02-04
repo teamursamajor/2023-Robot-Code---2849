@@ -27,8 +27,8 @@ public class ArmSubsystem extends SubsystemBase {
     private VictorSPX winchMotorVictor = new VictorSPX(0);
     
     // this will somehow tell us if we are overextending the arm
-    private DigitalInput topLimitSwitch = new DigitalInput(0); // CHANGE PORT IT IS A FILLER
-    private DigitalInput bottomLimitSwitch = new DigitalInput(1); //CHANGE PORT IT IS A FILLER
+    private DigitalInput topLimitSwitch = new DigitalInput(1); // CHANGE PORT IT IS A FILLER
+    private DigitalInput bottomLimitSwitch = new DigitalInput(0); //CHANGE PORT IT IS A FILLER
     // this will control the arm extention
 
     Compressor comp = new Compressor(1, PneumaticsModuleType.REVPH);
@@ -56,10 +56,12 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean getTopSwitch() {
+        System.out.println("Top Limit Switch: " + topLimitSwitch.get());
         return topLimitSwitch.get();
     }
 
     public boolean getBottomSwitch() {
+        System.out.println("Bottom Limit Switch: " + bottomLimitSwitch.get());
         return bottomLimitSwitch.get();
     }
 
