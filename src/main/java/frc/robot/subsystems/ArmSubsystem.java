@@ -19,14 +19,15 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
     private DoubleSolenoid clawSol = new DoubleSolenoid(1,PneumaticsModuleType.REVPH, 0,15);
-    private Servo clawServo =  new Servo(0);
-    //private TalonFX winchMotor = new TalonFX(0); // REPLACE
-    private VictorSPX winchMotor = new VictorSPX(0);
+    //private Servo clawServo =  new Servo(0);
+    private TalonFX winchMotorTalon = new TalonFX(2); // REPLACE
+    private VictorSP winchMotorVictor = new VictorSP(0);
     //private Spark winchMotorVictor = new Spark(0);
     
     // this will somehow tell us if we are overextending the arm
@@ -37,28 +38,23 @@ public class ArmSubsystem extends SubsystemBase {
     Compressor comp = new Compressor(1, PneumaticsModuleType.REVPH);
 
     public ArmSubsystem() {
-        clawServo.setBounds(2, 1.8, 1.5, 1.2, 1);
-        winchMotor.setNeutralMode(NeutralMode.Brake);
-        //winchMotorVictor.
-        //winchMotorVictor.setNeutralMode(NeutralMode.Brake);
+        //clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
+        
+        
+        winchMotorTalon.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
         setClawSol(true);
     }
 
-    public void setMotor(double speed){
-        winchMotor.set(VictorSPXControlMode.PercentOutput, speed);
+    public void setMotorTalon(double speed){
+        winchMotorTalon.set(TalonFXControlMode.PercentOutput, speed);
         //set(TalonFXControlMode.PercentOutput, speed);
     }
 
     public void setMotorVictor(double speed) {
-        System.out.println("Motor Moment: " + speed);
-        //winchMotorVictor.set(VictorSPXControlMode.PercentOutput, speed);
-    }
-
-    public void setServo(double position) {
-        System.out.println("change");
-        clawServo.set(position);
+        //System.out.println("Motor Moment: " + speed);
+        winchMotorVictor.set(speed);
     }
 
     public boolean getTopSwitch() {
