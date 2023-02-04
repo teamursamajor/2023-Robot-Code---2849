@@ -45,7 +45,7 @@ public class LimeLightSubsystem extends SubsystemBase {
 
 
       public double getX() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("photonvision");
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry tv = table.getEntry("tv");
         double x;
