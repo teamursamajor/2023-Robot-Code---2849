@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
@@ -17,18 +18,20 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
     private DoubleSolenoid clawSol = new DoubleSolenoid(1,PneumaticsModuleType.REVPH, 0,15);
     private Servo clawServo =  new Servo(0);
-    private TalonFX winchMotor = new TalonFX(0); // REPLACE
-    private VictorSPX winchMotorVictor = new VictorSPX(0);
+    //private TalonFX winchMotor = new TalonFX(0); // REPLACE
+    private VictorSPX winchMotor = new VictorSPX(0);
+    //private Spark winchMotorVictor = new Spark(0);
     
     // this will somehow tell us if we are overextending the arm
-    private DigitalInput topLimitSwitch = new DigitalInput(0); // CHANGE PORT IT IS A FILLER
-    private DigitalInput bottomLimitSwitch = new DigitalInput(1); //CHANGE PORT IT IS A FILLER
+    private DigitalInput topLimitSwitch = new DigitalInput(1); // CHANGE PORT IT IS A FILLER
+    private DigitalInput bottomLimitSwitch = new DigitalInput(0); //CHANGE PORT IT IS A FILLER
     // this will control the arm extention
 
     Compressor comp = new Compressor(1, PneumaticsModuleType.REVPH);
@@ -36,18 +39,21 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         clawServo.setBounds(2, 1.8, 1.5, 1.2, 1);
         winchMotor.setNeutralMode(NeutralMode.Brake);
-        winchMotorVictor.setNeutralMode(NeutralMode.Brake);
+        //winchMotorVictor.
+        //winchMotorVictor.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
         setClawSol(true);
     }
 
     public void setMotor(double speed){
-        winchMotor.set(TalonFXControlMode.PercentOutput, speed);
+        winchMotor.set(VictorSPXControlMode.PercentOutput, speed);
+        //set(TalonFXControlMode.PercentOutput, speed);
     }
 
     public void setMotorVictor(double speed) {
-        winchMotorVictor.set(VictorSPXControlMode.PercentOutput, speed);
+        System.out.println("Motor Moment: " + speed);
+        //winchMotorVictor.set(VictorSPXControlMode.PercentOutput, speed);
     }
 
     public void setServo(double position) {
@@ -56,10 +62,12 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean getTopSwitch() {
+        System.out.println("Top Limit Switch: " + topLimitSwitch.get());
         return topLimitSwitch.get();
     }
 
     public boolean getBottomSwitch() {
+        System.out.println("Bottom Limit Switch: " + bottomLimitSwitch.get());
         return bottomLimitSwitch.get();
     }
 
