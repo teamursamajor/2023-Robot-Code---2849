@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
@@ -17,11 +18,13 @@ public class AutoConeDropCommand extends CommandBase {
     boolean alignFinished;
     private final DriveSubsystem DRIVE_SUBSYSTEM;
     private final LimeLightSubsystem LIME_LIGHT; 
+    private final ArmSubsystem ARM_SUBSYSTEM;
 
-    public AutoConeDropCommand(DriveSubsystem driveSubsystem, LimeLightSubsystem limeLightSubsystem, boolean isHigh){
-        this.isHigh = isHigh;  //true is going for high pole, flase if going for mid
+    public AutoConeDropCommand(DriveSubsystem driveSubsystem, LimeLightSubsystem limeLightSubsystem,ArmSubsystem armSubsystem, boolean isHigh){
+        this.isHigh = isHigh;  //true is going for high pole, false if going for mid
         DRIVE_SUBSYSTEM = driveSubsystem;
         LIME_LIGHT = limeLightSubsystem;
+        ARM_SUBSYSTEM = armSubsystem;
         addRequirements(DRIVE_SUBSYSTEM);
         addRequirements(LIME_LIGHT);
     }
@@ -30,6 +33,14 @@ public class AutoConeDropCommand extends CommandBase {
     public void initialize() {
         //stop robot, turn off controls.
         alignFinished = false;
+        if (!LIME_LIGHT.checkTargets()){
+            alignFinished = true;
+        }
+        if(isHigh){
+            LIME_LIGHT.assignHigh();
+        }else{
+            LIME_LIGHT.assignMid();
+        }
         xAligned = false;
     }
 
@@ -40,6 +51,7 @@ public class AutoConeDropCommand extends CommandBase {
         }else{
             distance = LIME_LIGHT.getDistanceMid();
         }
+
         double x = LIME_LIGHT.getYaw();
 
         if(!xAligned){

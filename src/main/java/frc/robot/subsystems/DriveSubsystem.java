@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -13,6 +14,7 @@ import static frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
     private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
+    private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
     private double frontLeft, frontRight, backLeft, backRight;
 
     private final MecanumDrive m_drive;
@@ -52,7 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void driveField(double fowardBack, double leftRight, double rotation) {
-        System.out.println(getAngleYaw());
         m_drive.driveCartesian(fowardBack, leftRight, rotation, new Rotation2d(getAngleYaw()));
     }
 
