@@ -6,7 +6,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ManualActuatorClawCommand extends CommandBase {
     private final ArmSubsystem ARM_SUBSYSTEM;
     boolean isOpening;
-    double position;
+    boolean position;
 
     public ManualActuatorClawCommand(ArmSubsystem ARM_SUBSYSTEM, boolean isOpening) {
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
@@ -19,15 +19,15 @@ public class ManualActuatorClawCommand extends CommandBase {
         System.out.println("inital");
         // TODO Auto-generated method stub
         if(isOpening) {
-            position = 0.0;
+            position = true;
         } else {
-            position = 1.0;
+            position = false;
         }
     }
 
     @Override
     public void execute() {
-        ARM_SUBSYSTEM.setServo(position);
+        ARM_SUBSYSTEM.setClawSol(position);
     }
 
     @Override

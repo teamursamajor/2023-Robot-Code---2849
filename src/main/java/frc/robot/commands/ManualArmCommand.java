@@ -7,8 +7,8 @@ public class ManualArmCommand extends CommandBase {
 
     boolean isUp;
     double speed;
-    boolean isFinished = false;
-    
+
+
     private final ArmSubsystem ARM_SUBSYSTEM;
     public ManualArmCommand(ArmSubsystem ARM_SUBSYSTEM, boolean isUp){
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
@@ -19,11 +19,11 @@ public class ManualArmCommand extends CommandBase {
     
     @Override
     public void initialize() {
-        ARM_SUBSYSTEM.setMotorVictor(0.0);
+        ARM_SUBSYSTEM.setMotorTalon(0.0);
         if(isUp){
             speed = .25;
         }else{
-            speed = -.10;
+            speed = -.1;  
         }
 
     }
@@ -31,8 +31,7 @@ public class ManualArmCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        //ARM_SUBSYSTEM.setMotor(speed);
-        ARM_SUBSYSTEM.setMotorVictor(speed);
+        ARM_SUBSYSTEM.setMotorTalon(speed);
         //System.out.println("Bottom Limit:"+ ARM_SUBSYSTEM.getBottomSwitch() + "Top Limit: "+ ARM_SUBSYSTEM.getTopSwitch());
         ARM_SUBSYSTEM.getTopSwitch();
         ARM_SUBSYSTEM.getBottomSwitch();
@@ -42,15 +41,17 @@ public class ManualArmCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-
-        ARM_SUBSYSTEM.setMotor(0.0);
+        System.out.println("end");
+        ARM_SUBSYSTEM.setMotorTalon(0.0);
 
     }
 
+    /* 
     @Override
     public boolean isFinished() {
         return isFinished;
     }
+    */
 
 
 

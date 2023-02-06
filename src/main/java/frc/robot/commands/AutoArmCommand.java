@@ -38,20 +38,20 @@ public class AutoArmCommand extends CommandBase {
         minLimitUpdated = ARM_SUBSYSTEM.getBottomSwitch();
         maxLimitUpdated = ARM_SUBSYSTEM.getTopSwitch();
         if(!inAPosition && !minLimitUpdated){
-            ARM_SUBSYSTEM.setMotorVictor(-.15);
+            ARM_SUBSYSTEM.setMotorTalon(-.10);
         }else if(!inAPosition && minLimitUpdated){
             isFinished = true;
         }else if(goingUp){
             if(maxLimitUpdated){
                 isFinished = true;
             }else{
-                ARM_SUBSYSTEM.setMotorVictor(.25);
+                ARM_SUBSYSTEM.setMotorTalon(.25);
             }
         }else if(!goingUp){
             if(minLimitUpdated){
                 isFinished = true;
             }else{
-                ARM_SUBSYSTEM.setMotorVictor(-.15);
+                ARM_SUBSYSTEM.setMotorTalon(-.15);
             }
         }
 
