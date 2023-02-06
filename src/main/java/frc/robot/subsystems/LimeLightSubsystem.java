@@ -86,7 +86,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     double min = copy.get(0).getYaw();
     for(int i = 0; i < copy.size(); i++){
       if(Math.abs(copy.get(i).getYaw())< min){
-        min = copy.get(i);
+        min = copy.get(i).getYaw();
         minIndex = i;
       }
     }
@@ -96,7 +96,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     minIndex = 0;
     for(int i = 0; i < copy.size(); i++){
       if(Math.abs(copy.get(i).getYaw())< min){
-        min = copy.get(i);
+        min = copy.get(i).getYaw();
         minIndex = i;
       }
     }
