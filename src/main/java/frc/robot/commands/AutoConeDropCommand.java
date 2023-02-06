@@ -40,7 +40,7 @@ public class AutoConeDropCommand extends CommandBase {
         }else{
             distance = LIME_LIGHT.getDistanceMid();
         }
-        double x = LIME_LIGHT.getX();
+        double x = LIME_LIGHT.getYaw();
 
         if(!xAligned){
             if (x == Double.MIN_VALUE) {

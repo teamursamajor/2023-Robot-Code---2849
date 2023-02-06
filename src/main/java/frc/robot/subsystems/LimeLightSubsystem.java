@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
@@ -18,7 +19,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     double camAngle = 15.0; // angles of limelight camera, CHNAGE
     private PhotonCamera camera = new PhotonCamera("photonvision");
     private List<PhotonTrackedTarget> targetList;
-    
+    PhotonTrackedTarget target;
 
 
     //give the horizontal distance from robot to the mid pole
@@ -78,14 +79,55 @@ public class LimeLightSubsystem extends SubsystemBase {
     return (result.getTargets().size() >= 2);
   }
 
-  public void assignMid(){
-    
+  private ArrayList<PhotonTrackedTarget> assignTargets(){
+    ArrayList<PhotonTrackedTarget> groupTargets = new ArrayList<>();
+    ArrayList<PhotonTrackedTarget> copy = new ArrayList<>(targetList);
+    int minIndex = 0;
+    double min = copy.get(0).getYaw();
+    for(int i = 0; i < copy.size(); i++){
+      if(Math.abs(copy.get(i).getYaw())< min){
+        min = copy.get(i);
+        minIndex = i;
+      }
+    }
+    groupTargets.add(copy.get(minIndex));
+    copy.remove(minIndex);
+    min = copy.get(0).getYaw();
+    minIndex = 0;
+    for(int i = 0; i < copy.size(); i++){
+      if(Math.abs(copy.get(i).getYaw())< min){
+        min = copy.get(i);
+        minIndex = i;
+      }
+    }
+    groupTargets.add(copy.get(minIndex));
+    return groupTargets;
   }
 
-  public double getX() {
-    var result = camera.getLatestResult();
-    //result.getBestTarget().
-    return 0.0;
+  public void assignMid(){
+    ArrayList <PhotonTrackedTarget> groupTargets = assignTargets();
+    if(groupTargets.get(0).getPitch() > groupTargets.get(1).getPitch()){
+      target = groupTargets.get(1);
+    }else{
+      target = groupTargets.get(0);
+    }
+  }
+
+  public void assignHigh(){
+    ArrayList <PhotonTrackedTarget> groupTargets = assignTargets();
+    if(groupTargets.get(0).getPitch() > groupTargets.get(1).getPitch()){
+      target = groupTargets.get(0);
+    }else{
+      target = groupTargets.get(1);
+    }
+  }
+
+  public double getYaw(){
+    return target.getYaw();
+  }
+
+  public double getPitch(){
+    return target.getPitch();
   }
 
   private double getOffsetAngle(){
