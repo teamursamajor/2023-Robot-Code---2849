@@ -35,8 +35,8 @@ public class DriveSubsystem extends SubsystemBase {
         motorFrontRight = new WPI_VictorSPX(2);
         motorBackLeft = new WPI_VictorSPX(0);
         motorBackRight = new WPI_VictorSPX(1);
-        //motorFrontLeft.setInverted(true);
-        //motorBackLeft.setInverted(true);
+        motorFrontLeft.setInverted(true);
+        motorBackLeft.setInverted(true);
 
         m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
                 motorBackRight);
