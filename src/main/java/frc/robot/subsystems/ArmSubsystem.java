@@ -28,6 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
     private DoubleSolenoid clawSol = new DoubleSolenoid(1,PneumaticsModuleType.REVPH, 0,15);
     //private Servo clawServo =  new Servo(0);
     private Talon winchMotorTalon = new Talon(0); // REPLACE
+    private DoubleSolenoid armSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 10);
     //private VictorSP winchMotorVictor = new VictorSP(0);
     //private Spark winchMotorVictor = new Spark(0);
     
@@ -46,6 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
         setClawSol(true);
+        setArmSol(true);
     }
 
     public void setMotorTalon(double speed){
@@ -70,22 +72,26 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setClawSol(boolean closeOrNot){
         clawSol.set(closeOrNot ? kForward : kReverse);
-        System.out.println(clawSol.get());
+    }
+
+    public void setArmSol(boolean closeOrNot){
+        armSol.set(closeOrNot ? kForward : kReverse);
     }
 
     public void turnOffClawSol(){
         clawSol.set(kOff);
     }
 
-    public boolean getClawSol(){
-        return true;
+    public void turnOffArmSol(){
+        armSol.set(kOff);
     }
 
     public void toggleClawSol(){
         clawSol.toggle();
     }
-    public void setClawSol(){
-        clawSol.set(kForward);
+
+    public void toggleArmSol(){
+        armSol.toggle();
     }
 
 }
