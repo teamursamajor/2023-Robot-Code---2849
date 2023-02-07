@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -15,6 +16,7 @@ import static frc.robot.Constants.*;
 public class DriveSubsystem extends SubsystemBase {
     private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
     private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
+    
     private double frontLeft, frontRight, backLeft, backRight;
 
     private final MecanumDrive m_drive;
@@ -31,15 +33,22 @@ public class DriveSubsystem extends SubsystemBase {
     // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
 
     public DriveSubsystem() {
-        motorFrontLeft = new WPI_VictorSPX(3);
+        /*motorFrontLeft = new WPI_VictorSPX(3);
         motorFrontRight = new WPI_VictorSPX(2);
         motorBackLeft = new WPI_VictorSPX(0);
         motorBackRight = new WPI_VictorSPX(1);
+        */
+
+        motorFrontLeftTalon = new WPI_TalonFX(4);
+        motorBackLeftTalon = new WPI_TalonFX(1);
+        motorFrontRightTalon = new WPI_TalonFX(0);
+        motorBackRightTalon = new WPI_TalonFX(3);
+
         //motorFrontLeft.setInverted(true);
         //motorBackLeft.setInverted(true);
 
-        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
-                motorBackRight);
+        m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon,
+                motorBackRightTalon);
         m_drive.setSafetyEnabled(false);
         zeroYaw();
     }
