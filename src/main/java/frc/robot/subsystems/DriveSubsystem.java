@@ -59,7 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRight = new WPI_VictorSPX(1);
         
 
-        /*motorFrontLeftTalon = new WPI_TalonFX(4);
+        motorFrontLeftTalon = new WPI_TalonFX(4);
         motorBackLeftTalon = new WPI_TalonFX(1);
         motorFrontRightTalon = new WPI_TalonFX(0);
         motorBackRightTalon = new WPI_TalonFX(3);
@@ -105,24 +105,21 @@ public class DriveSubsystem extends SubsystemBase {
 
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
-        */
-        m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon,
-                motorBackRightTalon);
+        
+        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
+                motorBackRight);
         m_drive.setSafetyEnabled(false);
         
         zeroYaw();
         
     }
-//-30
+
+    
     public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {
         
     }
 
     public void drive(double fowardBack, double leftRight, double rotation) {
-        // ChassisSpeeds chassisSpeed = new ChassisSpeeds(fowardBack, leftRight,
-        // rotation);
-        // MecanumDriveWheelSpeeds wheelSpeeds =
-        // m_kinematics.toWheelSpeeds(chassisSpeed);
         double fowardBackSpeed = 0;
         double leftRightSpeed = 0;
         double rotationSpeed = 0;
@@ -135,41 +132,24 @@ public class DriveSubsystem extends SubsystemBase {
         if(Math.abs(rotation) >= .1){
             rotationSpeed = rotation * 2000;
         }
-       
-
-        System.out.println("controllers:" + fowardBack + " "+ leftRight + " "+ rotation);
-        
-        /*double fowardBackSpeed = fowardBack *1500;
-        double leftRightSpeed = leftRight * 750;
-        double rotationSpeed = rotation * 1500;
-
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
-        
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
         System.out.println("Front Left: "+wheelSpeeds.frontLeftMetersPerSecond);
         System.out.println("Front Right: "+wheelSpeeds.frontRightMetersPerSecond);
         System.out.println("Back Left: "+wheelSpeeds.rearLeftMetersPerSecond);
         System.out.println("Back Right: "+wheelSpeeds.rearRightMetersPerSecond);
 
-
         motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond);
         motorFrontRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontRightMetersPerSecond);
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
         motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond);
-        */
         
-        
-
     
 
+    }
+
+    public void driveSim(double fowardBack, double leftRight, double rotation){
         m_drive.driveCartesian(leftRight, fowardBack, rotation);
-
-        /*System.out.println("Front Left: "+motorFrontLeftTalon.getSelectedSensorVelocity()/motorFrontLeftTalon.getMotorOutputPercent());
-        System.out.println("Front Right: "+motorFrontRightTalon.getSelectedSensorVelocity()/motorFrontRightTalon.getMotorOutputPercent());
-        System.out.println("Back Left: "+motorBackLeftTalon.getSelectedSensorVelocity()/motorBackLeftTalon.getMotorOutputPercent());
-        System.out.println("Back Right: "+motorBackRightTalon.getSelectedSensorVelocity()/motorBackRightTalon.getMotorOutputPercent());
-        */
-
     }
 
 
