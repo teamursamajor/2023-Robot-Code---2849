@@ -42,7 +42,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     }
 
     public void test() {
-      System.out.println(camera.getLatestResult());
+      System.out.println(camera.getLatestResult().getTargets().size());
     }
 
 
