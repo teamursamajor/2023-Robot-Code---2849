@@ -77,8 +77,9 @@ public class RobotContainer {
     
 
     // XBOX_CONTROLLER.a().onTrue(new AutoBalanceCommand(m_robotDrive));
-    XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem, false));
-    XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem, true));
+    //XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem, false));
+    //XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem, true));
+  
     XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
     
     
