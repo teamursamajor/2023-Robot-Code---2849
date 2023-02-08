@@ -102,7 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
 		motorBackRightTalon.config_kI(0, 0.001, 30);
 		motorBackRightTalon.config_kD(0, 5, 30);
 
-
+        motorFrontLeft.setInverted(true);
+        motorBackLeft.setInverted(true);
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
         
@@ -149,7 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void driveSim(double fowardBack, double leftRight, double rotation){
-        m_drive.driveCartesian(leftRight, fowardBack, rotation);
+        m_drive.driveCartesian(fowardBack, leftRight, rotation);
     }
 
 
