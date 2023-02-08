@@ -23,10 +23,15 @@ import static frc.robot.Constants.*;
 public class DriveSubsystem extends SubsystemBase {
     private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
     private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
-    
     private double frontLeft, frontRight, backLeft, backRight;
 
-    //private final MecanumDrive m_drive;
+    private final MecanumDrive m_drive;
+    private double ratio = 12.75;
+    private double targetMetersPerSec = 0.8;
+    private double wheelRadi = 0.1016; // radius in meters
+    private double wheelCirc = (2 * Math.PI) * wheelRadi; // circumference also in meters
+    private double wheelDist = wheelCirc * ratio; // gear ratio compensation
+
 
     AHRS ahrs = new AHRS(SPI.Port.kMXP);
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
@@ -48,14 +53,13 @@ public class DriveSubsystem extends SubsystemBase {
     // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
 
     public DriveSubsystem() {
-        /*motorFrontLeft = new WPI_VictorSPX(3);
+        motorFrontLeft = new WPI_VictorSPX(3);
         motorFrontRight = new WPI_VictorSPX(2);
         motorBackLeft = new WPI_VictorSPX(0);
         motorBackRight = new WPI_VictorSPX(1);
-        */
+        
 
-
-        motorFrontLeftTalon = new WPI_TalonFX(4);
+        /*motorFrontLeftTalon = new WPI_TalonFX(4);
         motorBackLeftTalon = new WPI_TalonFX(1);
         motorFrontRightTalon = new WPI_TalonFX(0);
         motorBackRightTalon = new WPI_TalonFX(3);
@@ -101,15 +105,19 @@ public class DriveSubsystem extends SubsystemBase {
 
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
-
-        /*m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon,
+        */
+        m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon,
                 motorBackRightTalon);
         m_drive.setSafetyEnabled(false);
-        */
+        
         zeroYaw();
         
     }
 //-30
+    public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {
+        
+    }
+
     public void drive(double fowardBack, double leftRight, double rotation) {
         // ChassisSpeeds chassisSpeed = new ChassisSpeeds(fowardBack, leftRight,
         // rotation);
@@ -130,6 +138,10 @@ public class DriveSubsystem extends SubsystemBase {
        
 
         System.out.println("controllers:" + fowardBack + " "+ leftRight + " "+ rotation);
+        
+        /*double fowardBackSpeed = fowardBack *1500;
+        double leftRightSpeed = leftRight * 750;
+        double rotationSpeed = rotation * 1500;
 
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         
@@ -144,13 +156,13 @@ public class DriveSubsystem extends SubsystemBase {
         motorFrontRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontRightMetersPerSecond);
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
         motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond);
-
+        */
         
         
 
     
 
-        //m_drive.driveCartesian(.5, 0, 0);
+        m_drive.driveCartesian(leftRight, fowardBack, rotation);
 
         /*System.out.println("Front Left: "+motorFrontLeftTalon.getSelectedSensorVelocity()/motorFrontLeftTalon.getMotorOutputPercent());
         System.out.println("Front Right: "+motorFrontRightTalon.getSelectedSensorVelocity()/motorFrontRightTalon.getMotorOutputPercent());
