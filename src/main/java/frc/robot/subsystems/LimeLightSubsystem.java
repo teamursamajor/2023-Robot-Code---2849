@@ -41,13 +41,16 @@ public class LimeLightSubsystem extends SubsystemBase {
       return PhotonUtils.calculateDistanceToTargetMeters(heightOfCam, heightHigh, cameraPitchInRadians, targetPitchRadians);
     }
 
-    
+    public void test() {
+      System.out.println(camera.getLatestResult());
+    }
 
 
   //yaw -> x
   //Pitch -> y
   // distance from camera hiehgt, target height and camera pitch(radians)
   //choose target based of its y
+   
 
   //Checks if there are targets
   public boolean checkTargets() {

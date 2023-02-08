@@ -61,16 +61,16 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon = new WPI_TalonFX(3);
 
         motorFrontLeftTalon.configFactoryDefault();
-		motorFrontLeftTalon.configNeutralDeadband(0.001);
+		motorFrontLeftTalon.configNeutralDeadband(.01);
 
         motorBackLeftTalon.configFactoryDefault();
-		motorBackLeftTalon.configNeutralDeadband(0.001);
+		motorBackLeftTalon.configNeutralDeadband(.01);
 
         motorFrontRightTalon.configFactoryDefault();
-		motorFrontRightTalon.configNeutralDeadband(0.001);
+		motorFrontRightTalon.configNeutralDeadband(0.01);
 
         motorBackRightTalon.configFactoryDefault();
-		motorBackRightTalon.configNeutralDeadband(0.001);
+		motorBackRightTalon.configNeutralDeadband(0.01);
         
 
         motorFrontLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor , 0 , 10);
@@ -115,9 +115,21 @@ public class DriveSubsystem extends SubsystemBase {
         // rotation);
         // MecanumDriveWheelSpeeds wheelSpeeds =
         // m_kinematics.toWheelSpeeds(chassisSpeed);
-        double fowardBackSpeed = fowardBack *1500;
-        double leftRightSpeed = leftRight * 750;
-        double rotationSpeed = rotation * 1500;
+        double fowardBackSpeed = 0;
+        double leftRightSpeed = 0;
+        double rotationSpeed = 0;
+        if(Math.abs(fowardBack)>=.1){
+            fowardBackSpeed = fowardBack *2000;
+        }
+        if(Math.abs(leftRight) >= .1){
+            leftRightSpeed = leftRight * 1000;
+        }
+        if(Math.abs(rotation) >= .1){
+            rotationSpeed = rotation * 2000;
+        }
+       
+
+        System.out.println("controllers:" + fowardBack + " "+ leftRight + " "+ rotation);
 
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         
@@ -134,6 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond);
 
         
+        
 
     
 
@@ -146,6 +159,8 @@ public class DriveSubsystem extends SubsystemBase {
         */
 
     }
+
+
 
     public void driveField(double fowardBack, double leftRight, double rotation) {  
         //m_drive.driveCartesian(fowardBack, leftRight, rotation, new Rotation2d(getAngleYaw()));

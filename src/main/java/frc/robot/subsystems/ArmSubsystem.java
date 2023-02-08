@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
-    private DoubleSolenoid clawSol = new DoubleSolenoid(1,PneumaticsModuleType.REVPH, 0,15);
+    private DoubleSolenoid clawSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0,15);
     //private Servo clawServo =  new Servo(0);
     private Talon winchMotorTalon = new Talon(0); // REPLACE
     private DoubleSolenoid armSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 10);

@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class AutoArmCommand extends CommandBase {
+public class AutoArmWinchCommand extends CommandBase {
     boolean isFinished;
     boolean minLimitUpdated;
     boolean maxLimitUpdated;
@@ -12,7 +12,7 @@ public class AutoArmCommand extends CommandBase {
     boolean goingUp = false;
     boolean inAPosition = true;
     private final ArmSubsystem ARM_SUBSYSTEM;
-    public AutoArmCommand(ArmSubsystem ARM_SUBSYSTEM){
+    public AutoArmWinchCommand(ArmSubsystem ARM_SUBSYSTEM){
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
         addRequirements(ARM_SUBSYSTEM);
     }
