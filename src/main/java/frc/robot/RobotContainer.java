@@ -7,6 +7,7 @@ package frc.robot;
 import static frc.robot.Constants.*;
 
 import frc.robot.commands.AutoPistonClawCommand;
+import frc.robot.commands.LimeLightTestCommand;
 import frc.robot.commands.AutoArmPistonCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.ManualArmCommand;
@@ -79,13 +80,14 @@ public class RobotContainer {
     //right trigger --> toggle arm
     
 
-    // XBOX_CONTROLLER.a().onTrue(new AutoBalanceCommand(m_robotDrive));
+    //XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
     //XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem, false));
     //XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem, true));
   
     XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
-    
+    XBOX_CONTROLLER.x().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, false));
+    XBOX_CONTROLLER.y().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, true));
     
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -57,12 +58,16 @@ public class DriveSubsystem extends SubsystemBase {
         motorFrontRight = new WPI_VictorSPX(2);
         motorBackLeft = new WPI_VictorSPX(0);
         motorBackRight = new WPI_VictorSPX(1);
-        
 
         motorFrontLeftTalon = new WPI_TalonFX(4);
         motorBackLeftTalon = new WPI_TalonFX(1);
         motorFrontRightTalon = new WPI_TalonFX(0);
         motorBackRightTalon = new WPI_TalonFX(3);
+
+        motorFrontLeftTalon.setNeutralMode(NeutralMode.Coast);
+        motorBackLeftTalon.setNeutralMode(NeutralMode.Coast);
+        motorFrontRightTalon.setNeutralMode(NeutralMode.Coast);
+        motorBackRightTalon.setNeutralMode(NeutralMode.Coast);
 
         motorFrontLeftTalon.configFactoryDefault();
 		motorFrontLeftTalon.configNeutralDeadband(.01);
@@ -125,25 +130,28 @@ public class DriveSubsystem extends SubsystemBase {
         double leftRightSpeed = 0;
         double rotationSpeed = 0;
         if(Math.abs(fowardBack)>=.1){
-            fowardBackSpeed = fowardBack *2000;
+            fowardBackSpeed = fowardBack *6000;
         }
         if(Math.abs(leftRight) >= .1){
-            leftRightSpeed = leftRight * 1000;
+            leftRightSpeed = leftRight * 5000;
         }
         if(Math.abs(rotation) >= .1){
-            rotationSpeed = rotation * 2000;
+            rotationSpeed = rotation * 6000;
         }
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-        System.out.println("Front Left: "+wheelSpeeds.frontLeftMetersPerSecond);
-        System.out.println("Front Right: "+wheelSpeeds.frontRightMetersPerSecond);
-        System.out.println("Back Left: "+wheelSpeeds.rearLeftMetersPerSecond);
-        System.out.println("Back Right: "+wheelSpeeds.rearRightMetersPerSecond);
+        double multipleSped = 1.17;
 
-        motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond);
+        motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond*multipleSped);
         motorFrontRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontRightMetersPerSecond);
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
-        motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond);
+        motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond*multipleSped);
+
+        System.out.println("Front Left: "+motorFrontLeftTalon.getSelectedSensorVelocity());
+        System.out.println("Front Right: "+motorFrontRightTalon.getSelectedSensorVelocity());
+        System.out.println("Back Left: "+motorBackLeftTalon.getSelectedSensorVelocity());
+        System.out.println("Back Right: "+motorBackRightTalon.getSelectedSensorVelocity());
+
         
     
 
@@ -152,6 +160,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void driveSim(double fowardBack, double leftRight, double rotation){
         m_drive.driveCartesian(fowardBack, leftRight, rotation);
     }
+
 
 
 

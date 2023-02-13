@@ -19,7 +19,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     double heightHigh = 106; // the height of the high pole in cm
     double heightOfCam = 30; //the hieght of the limelight camera meters to the ground, Change
     double camAngle = 15.0; // angles of limelight camera, CHNAGE
-    private PhotonCamera camera = new PhotonCamera("photonvision");
+    private PhotonCamera camera = new PhotonCamera("OV5647");
     private List<PhotonTrackedTarget> targetList;
     PhotonTrackedTarget target;
 
@@ -43,8 +43,15 @@ public class LimeLightSubsystem extends SubsystemBase {
 
     public void test() {
       System.out.println(camera.getLatestResult().getTargets().size());
+      checkTargets();
+      assignMid();
+      System.out.println("High Target x: "+ target.getYaw());
+      System.out.println("High Target y: " + target.getPitch());
+      
+      
+    
     }
-
+ 
 
   //yaw -> x
   //Pitch -> y
@@ -91,6 +98,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   //assigns the mid Target
   public void assignMid(){
     ArrayList <PhotonTrackedTarget> groupTargets = assignTargets();
+    target = groupTargets.get(0);
     if(groupTargets.size() == 2){
       if(groupTargets.get(0).getPitch() > groupTargets.get(1).getPitch()){
         target = groupTargets.get(1);
@@ -98,8 +106,6 @@ public class LimeLightSubsystem extends SubsystemBase {
         target = groupTargets.get(0);
       }
     }
-    target = groupTargets.get(0);
-    
   }
 
   //assign high target
@@ -115,6 +121,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     target = groupTargets.get(0);
   }
 
+  //if both 0.0 fdidn;t detect target
   public double getYaw(){
     return target.getYaw();
   }

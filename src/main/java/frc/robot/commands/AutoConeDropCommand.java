@@ -5,7 +5,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AutoConeDropCommand extends CommandBase {
+public class AutoConeDropCommand  extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     double armLength;  //horizontal length of arm when arm is fully extended
     double xValue;  //limelght deteced x value
@@ -60,11 +60,12 @@ public class AutoConeDropCommand extends CommandBase {
                 return;
             } else if (x <= (centerX+range) && x >= (centerX-range)) {
                 // stop robot set speed 0
+                DRIVE_SUBSYSTEM.drive(0, 0, 0);
                 xAligned = true;
             } else if (x > centerX+range) {
-                //move left
+                DRIVE_SUBSYSTEM.drive(0, .25, 0);
             } else if (x < centerX-range) {
-                //move right
+                DRIVE_SUBSYSTEM.drive(0, .25, 0);
             }
         }else{
             if(distance <= armLength + range && distance >= armLength - range){
