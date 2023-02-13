@@ -12,23 +12,23 @@ public class AutoArmWinchCommand extends CommandBase {
     boolean goingUp = false;
     boolean inAPosition = true;
     private final ArmSubsystem ARM_SUBSYSTEM;
-    public AutoArmWinchCommand(ArmSubsystem ARM_SUBSYSTEM){
+
+    public AutoArmWinchCommand(ArmSubsystem ARM_SUBSYSTEM) {
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
         addRequirements(ARM_SUBSYSTEM);
     }
-    
-    
+
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
         isFinished = false;
         minLimit = ARM_SUBSYSTEM.getBottomSwitch();
         maxLimit = ARM_SUBSYSTEM.getTopSwitch();
-        if(!minLimit && !maxLimit){
+        if (!minLimit && !maxLimit) {
             inAPosition = false;
-        }else if(minLimit){
+        } else if (minLimit) {
             goingUp = true;
-        }else{
+        } else {
             goingUp = false;
         }
     }
@@ -37,25 +37,25 @@ public class AutoArmWinchCommand extends CommandBase {
     public void execute() {
         minLimitUpdated = ARM_SUBSYSTEM.getBottomSwitch();
         maxLimitUpdated = ARM_SUBSYSTEM.getTopSwitch();
-        if(!inAPosition && !minLimitUpdated){
+        if (!inAPosition && !minLimitUpdated) {
             ARM_SUBSYSTEM.setMotorTalon(-.10);
-        }else if(!inAPosition && minLimitUpdated){
+        } else if (!inAPosition && minLimitUpdated) {
             isFinished = true;
-        }else if(goingUp){
-            if(maxLimitUpdated){
+        } else if (goingUp) {
+            if (maxLimitUpdated) {
                 isFinished = true;
-            }else{
+            } else {
                 ARM_SUBSYSTEM.setMotorTalon(.25);
             }
-        }else if(!goingUp){
-            if(minLimitUpdated){
+        } else if (!goingUp) {
+            if (minLimitUpdated) {
                 isFinished = true;
-            }else{
+            } else {
                 ARM_SUBSYSTEM.setMotorTalon(-.15);
             }
         }
 
-    } 
+    }
 
     @Override
     public void end(boolean interrupted) {
@@ -65,6 +65,6 @@ public class AutoArmWinchCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return isFinished; 
+        return isFinished;
     }
 }

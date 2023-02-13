@@ -39,7 +39,6 @@ public class RobotContainer {
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -47,48 +46,50 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    /*m_robotDrive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -XBOX_CONTROLLER.getLeftY(),
-                -XBOX_CONTROLLER.getLeftX(),
-                -XBOX_CONTROLLER.getRightX()),
-            m_robotDrive));
-        /*
-        new RunCommand(new Runnable() {
-          public void run() {
-            System.out.println(XBOX_CONTROLLER.getRightY());
-            System.out.println(XBOX_CONTROLLER.getRightX());
-            System.out.println(Math.atan2(XBOX_CONTROLLER.getRightY(), XBOX_CONTROLLER.getRightX()) * 180 / Math.PI);
-          }
-        }, m_robotDrive));
-        */
+    /*
+     * m_robotDrive.setDefaultCommand(
+     * // A split-stick arcade command, with forward/backward controlled by the left
+     * // hand, and turning controlled by the right.
+     * new RunCommand(
+     * () -> m_robotDrive.drive(
+     * -XBOX_CONTROLLER.getLeftY(),
+     * -XBOX_CONTROLLER.getLeftX(),
+     * -XBOX_CONTROLLER.getRightX()),
+     * m_robotDrive));
+     * /*
+     * new RunCommand(new Runnable() {
+     * public void run() {
+     * System.out.println(XBOX_CONTROLLER.getRightY());
+     * System.out.println(XBOX_CONTROLLER.getRightX());
+     * System.out.println(Math.atan2(XBOX_CONTROLLER.getRightY(),
+     * XBOX_CONTROLLER.getRightX()) * 180 / Math.PI);
+     * }
+     * }, m_robotDrive));
+     */
 
     configureBindings();
   }
 
-  
   private void configureBindings() {
-    //future bingdings:
-    //sticks --> moving robot
-    //y --> auto balance
-    //b --> auto align with high pole
-    //a --> auto align with low polw
-    //right bumper --> toggle claw
-    //right trigger --> toggle arm
-    
+    // future bingdings:
+    // sticks --> moving robot
+    // y --> auto balance
+    // b --> auto align with high pole
+    // a --> auto align with low polw
+    // right bumper --> toggle claw
+    // right trigger --> toggle arm
 
-    //XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
-    //XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem, false));
-    //XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem, true));
-  
+    // XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
+    // XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem,
+    // false));
+    // XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem,
+    // true));
+
     XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.x().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, false));
     XBOX_CONTROLLER.y().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, true));
-    
+
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }
 

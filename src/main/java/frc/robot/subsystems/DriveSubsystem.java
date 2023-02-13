@@ -33,7 +33,6 @@ public class DriveSubsystem extends SubsystemBase {
     private double wheelCirc = (2 * Math.PI) * wheelRadi; // circumference also in meters
     private double wheelDist = wheelCirc * ratio; // gear ratio compensation
 
-
     AHRS ahrs = new AHRS(SPI.Port.kMXP);
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
     Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
@@ -41,8 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
     Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
     MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
-  m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-    );
+            m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
     // private final PWMSparkMax m_frontLeft = new
     // PWMSparkMax(MECANUM_FRONT_LEFT_PORT);
@@ -70,105 +68,98 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon.setNeutralMode(NeutralMode.Coast);
 
         motorFrontLeftTalon.configFactoryDefault();
-		motorFrontLeftTalon.configNeutralDeadband(.01);
+        motorFrontLeftTalon.configNeutralDeadband(.01);
 
         motorBackLeftTalon.configFactoryDefault();
-		motorBackLeftTalon.configNeutralDeadband(.01);
+        motorBackLeftTalon.configNeutralDeadband(.01);
 
         motorFrontRightTalon.configFactoryDefault();
-		motorFrontRightTalon.configNeutralDeadband(0.01);
+        motorFrontRightTalon.configNeutralDeadband(0.01);
 
         motorBackRightTalon.configFactoryDefault();
-		motorBackRightTalon.configNeutralDeadband(0.01);
-        
+        motorBackRightTalon.configNeutralDeadband(0.01);
 
-        motorFrontLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor , 0 , 10);
-        motorFrontRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor , 0 , 10);
-        motorBackLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor , 0 , 10);
-        motorBackRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor , 0 , 10);
+        motorFrontLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+        motorFrontRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+        motorBackLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+        motorBackRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
 
-        motorFrontLeftTalon.config_kF(0, 1023.0/20660.0, 30);
-		motorFrontLeftTalon.config_kP(0, .1, 30);
-		motorFrontLeftTalon.config_kI(0, 0.001, 30);
-		motorFrontLeftTalon.config_kD(0, 5, 30);
+        motorFrontLeftTalon.config_kF(0, 1023.0 / 20660.0, 30);
+        motorFrontLeftTalon.config_kP(0, .1, 30);
+        motorFrontLeftTalon.config_kI(0, 0.001, 30);
+        motorFrontLeftTalon.config_kD(0, 5, 30);
 
-        motorBackLeftTalon.config_kF(0, 1023.0/20660.0, 30);
-		motorBackLeftTalon.config_kP(0, .1, 30);
-		motorBackLeftTalon.config_kI(0, 0.001, 30);
-		motorBackLeftTalon.config_kD(0, 5, 30);
+        motorBackLeftTalon.config_kF(0, 1023.0 / 20660.0, 30);
+        motorBackLeftTalon.config_kP(0, .1, 30);
+        motorBackLeftTalon.config_kI(0, 0.001, 30);
+        motorBackLeftTalon.config_kD(0, 5, 30);
 
-        motorFrontRightTalon.config_kF(0, 1023.0/20660.0, 30);
-		motorFrontRightTalon.config_kP(0, .1, 30);
-		motorFrontRightTalon.config_kI(0, 0.001, 30);
-		motorFrontRightTalon.config_kD(0, 5, 30);
+        motorFrontRightTalon.config_kF(0, 1023.0 / 20660.0, 30);
+        motorFrontRightTalon.config_kP(0, .1, 30);
+        motorFrontRightTalon.config_kI(0, 0.001, 30);
+        motorFrontRightTalon.config_kD(0, 5, 30);
 
-        motorBackRightTalon.config_kF(0, 1023.0/20660.0, 30);
-		motorBackRightTalon.config_kP(0, .1, 30);
-		motorBackRightTalon.config_kI(0, 0.001, 30);
-		motorBackRightTalon.config_kD(0, 5, 30);
+        motorBackRightTalon.config_kF(0, 1023.0 / 20660.0, 30);
+        motorBackRightTalon.config_kP(0, .1, 30);
+        motorBackRightTalon.config_kI(0, 0.001, 30);
+        motorBackRightTalon.config_kD(0, 5, 30);
 
         motorFrontLeft.setInverted(true);
         motorBackLeft.setInverted(true);
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
-        
+
         m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
                 motorBackRight);
         m_drive.setSafetyEnabled(false);
-        
+
         zeroYaw();
-        
+
     }
 
-    
     public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {
-        
+
     }
 
     public void drive(double fowardBack, double leftRight, double rotation) {
         double fowardBackSpeed = 0;
         double leftRightSpeed = 0;
         double rotationSpeed = 0;
-        if(Math.abs(fowardBack)>=.1){
-            fowardBackSpeed = fowardBack *6000;
+        if (Math.abs(fowardBack) >= .1) {
+            fowardBackSpeed = fowardBack * 6000;
         }
-        if(Math.abs(leftRight) >= .1){
+        if (Math.abs(leftRight) >= .1) {
             leftRightSpeed = leftRight * 5000;
         }
-        if(Math.abs(rotation) >= .1){
+        if (Math.abs(rotation) >= .1) {
             rotationSpeed = rotation * 6000;
         }
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
         double multipleSped = 1.17;
 
-        motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond*multipleSped);
+        motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond * multipleSped);
         motorFrontRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontRightMetersPerSecond);
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
-        motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond*multipleSped);
+        motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond * multipleSped);
 
-        System.out.println("Front Left: "+motorFrontLeftTalon.getSelectedSensorVelocity());
-        System.out.println("Front Right: "+motorFrontRightTalon.getSelectedSensorVelocity());
-        System.out.println("Back Left: "+motorBackLeftTalon.getSelectedSensorVelocity());
-        System.out.println("Back Right: "+motorBackRightTalon.getSelectedSensorVelocity());
-
-        
-    
+        System.out.println("Front Left: " + motorFrontLeftTalon.getSelectedSensorVelocity());
+        System.out.println("Front Right: " + motorFrontRightTalon.getSelectedSensorVelocity());
+        System.out.println("Back Left: " + motorBackLeftTalon.getSelectedSensorVelocity());
+        System.out.println("Back Right: " + motorBackRightTalon.getSelectedSensorVelocity());
 
     }
 
-    public void driveSim(double fowardBack, double leftRight, double rotation){
+    public void driveSim(double fowardBack, double leftRight, double rotation) {
         m_drive.driveCartesian(fowardBack, leftRight, rotation);
     }
 
-
-
-
-    public void driveField(double fowardBack, double leftRight, double rotation) {  
-        //m_drive.driveCartesian(fowardBack, leftRight, rotation, new Rotation2d(getAngleYaw()));
+    public void driveField(double fowardBack, double leftRight, double rotation) {
+        // m_drive.driveCartesian(fowardBack, leftRight, rotation, new
+        // Rotation2d(getAngleYaw()));
     }
 
-    public float getAnglePitch(){
+    public float getAnglePitch() {
         return ahrs.getPitch();
     }
 
@@ -180,7 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
         return ahrs.getYaw();
     }
 
-    public float getAngleRoll(){
+    public float getAngleRoll() {
         return ahrs.getRoll();
     }
 
@@ -192,11 +183,11 @@ public class DriveSubsystem extends SubsystemBase {
         return ahrs.isConnected();
     }
 
-    public void calibrate(){
+    public void calibrate() {
         ahrs.calibrate();
     }
 
-    public boolean isCalibrate(){
+    public boolean isCalibrate() {
         return ahrs.isCalibrating();
     }
 

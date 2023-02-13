@@ -25,39 +25,38 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
-    private DoubleSolenoid clawSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0,15);
-    //private Servo clawServo =  new Servo(0);
+    private DoubleSolenoid clawSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 15);
+    // private Servo clawServo = new Servo(0);
     private Talon winchMotorTalon = new Talon(0); // REPLACE
     private DoubleSolenoid armSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 10);
-    //private VictorSP winchMotorVictor = new VictorSP(0);
-    //private Spark winchMotorVictor = new Spark(0);
-    
+    // private VictorSP winchMotorVictor = new VictorSP(0);
+    // private Spark winchMotorVictor = new Spark(0);
+
     // this will somehow tell us if we are overextending the arm
     private DigitalInput topLimitSwitch = new DigitalInput(1); // CHANGE PORT IT IS A FILLER
-    private DigitalInput bottomLimitSwitch = new DigitalInput(0); //CHANGE PORT IT IS A FILLER
+    private DigitalInput bottomLimitSwitch = new DigitalInput(0); // CHANGE PORT IT IS A FILLER
     // this will control the arm extention
 
     Compressor comp = new Compressor(1, PneumaticsModuleType.REVPH);
 
     public ArmSubsystem() {
-        //clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
-        
-        
-        //winchMotorTalon.setNeutralMode(NeutralMode.Brake);
+        // clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
+
+        // winchMotorTalon.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
         setClawSol(true);
         setArmSol(true);
     }
 
-    public void setMotorTalon(double speed){
-        winchMotorTalon.set( speed);
-        //set(TalonFXControlMode.PercentOutput, speed);
+    public void setMotorTalon(double speed) {
+        winchMotorTalon.set(speed);
+        // set(TalonFXControlMode.PercentOutput, speed);
     }
 
     public void setMotorVictor(double speed) {
-        //System.out.println("Motor Moment: " + speed);
-        //winchMotorVictor.set(speed);
+        // System.out.println("Motor Moment: " + speed);
+        // winchMotorVictor.set(speed);
     }
 
     public boolean getTopSwitch() {
@@ -70,27 +69,27 @@ public class ArmSubsystem extends SubsystemBase {
         return bottomLimitSwitch.get();
     }
 
-    public void setClawSol(boolean closeOrNot){
+    public void setClawSol(boolean closeOrNot) {
         clawSol.set(closeOrNot ? kForward : kReverse);
     }
 
-    public void setArmSol(boolean closeOrNot){
+    public void setArmSol(boolean closeOrNot) {
         armSol.set(closeOrNot ? kForward : kReverse);
     }
 
-    public void turnOffClawSol(){
+    public void turnOffClawSol() {
         clawSol.set(kOff);
     }
 
-    public void turnOffArmSol(){
+    public void turnOffArmSol() {
         armSol.set(kOff);
     }
 
-    public void toggleClawSol(){
+    public void toggleClawSol() {
         clawSol.toggle();
     }
 
-    public void toggleArmSol(){
+    public void toggleArmSol() {
         armSol.toggle();
     }
 

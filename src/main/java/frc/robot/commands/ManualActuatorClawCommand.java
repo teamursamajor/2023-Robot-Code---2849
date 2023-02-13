@@ -18,7 +18,7 @@ public class ManualActuatorClawCommand extends CommandBase {
     public void initialize() {
         System.out.println("inital");
         // TODO Auto-generated method stub
-        if(isOpening) {
+        if (isOpening) {
             position = true;
         } else {
             position = false;

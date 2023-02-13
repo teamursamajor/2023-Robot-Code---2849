@@ -19,7 +19,7 @@ public class AutoLeaveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(0.5,0.0,0.0);
+        driveSubsystem.drive(0.5, 0.0, 0.0);
         Timer.delay(1);
         finished = true;
     }
