@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -8,14 +9,14 @@ public class AutoBalanceCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
 
     float actualAngle;
-    float rollAngle;
+    float pitchAngle;
     float previousAngle;
     int counter;
     boolean balanced;
-    double minValue = 0; // Change as needed
-    double maxValue = 4; // change as needed
+    double minValue = -2; // Change as needed
+    double maxValue = 2; // change as needed
     double range = 2;
-    boolean onRamp;
+    boolean onRamp; 
     int balancedCountLimit = 20;
     int balancedCount;
     int rampCountLimit = 5;
@@ -25,6 +26,7 @@ public class AutoBalanceCommand extends CommandBase {
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
     }
+
 
     @Override
     public void initialize() {
@@ -36,31 +38,34 @@ public class AutoBalanceCommand extends CommandBase {
         balancedCount = 0;
         driveSubsystem.drive(0.0, 0.0, 0.0);
         // driveSubsystem.calibrate();
-        driveSubsystem.drive(.5, 0.0, 0.0);
+        driveSubsystem.drive(.3, 0.0, 0.0);
     }
 
     @Override
     public void execute() {
-        rollAngle = driveSubsystem.getAngleRoll();
-        actualAngle = (rollAngle * -1) - 4; // angle is inverted
+        pitchAngle = driveSubsystem.getAnglePitch();
+        actualAngle = pitchAngle + 4; 
 
-        double speed = (double) actualAngle / 50;
+        double speed = (double) actualAngle / 30;
         /*
          * if((actualAngle<minValue)&&(speed>-.15)){
          * speed = -.2;
          * }
          */
+        
+        //set minimum speed
         if (Math.abs(actualAngle) < 4 && actualAngle < 0) {
             speed = -0.2;
         } else if (Math.abs(actualAngle) < 4 && actualAngle > 0) {
             speed = 0.2;
         }
-        System.out.println(actualAngle);
-        // Out of range so robot is at an angle on ramp
 
+
+        // Out of range so robot is at an angle on ramp
         if ((actualAngle > maxValue) || (actualAngle < minValue)) {
             rampCounter++;
             if (rampCounter > rampCountLimit) {
+                //out of range long enough that we know robot is on ramp
                 onRamp = true;
             }
             // robot is tipping back, increase speed
@@ -78,8 +83,10 @@ public class AutoBalanceCommand extends CommandBase {
                 counter = 0;
             }
             // set speed
+            SmartDashboard.putNumber("Ramp speed", (speed ));  
             driveSubsystem.drive(speed, 0.0, 0.0);
         } else if ((onRamp)) {
+            driveSubsystem.drive(0.0, 0.0, 0.0);
             balancedCount++;
             if (balancedCount > balancedCountLimit) {
                 balanced = true;
@@ -94,9 +101,15 @@ public class AutoBalanceCommand extends CommandBase {
         System.out.println("end");
     }
 
-    @Override
+   /*  @Override
     public boolean isFinished() {
         return balanced;
     }
+    */
 
+        @Override
+        public boolean isFinished() {
+            // TODO Auto-generated method stub
+            return super.isFinished();
+        }
 }

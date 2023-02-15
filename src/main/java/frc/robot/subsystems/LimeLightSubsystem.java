@@ -44,11 +44,17 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
 
   public void test() {
-    System.out.println(camera.getLatestResult().getTargets().size());
+    SmartDashboard.putNumber("Number", 0.0);
+    SmartDashboard.putNumber("Target count",camera.getLatestResult().getTargets().size());
+    
     checkTargets();
+    
     assignMid();
-    System.out.println("High Target x: " + target.getYaw());
-    System.out.println("High Target y: " + target.getPitch());
+
+    SmartDashboard.putNumber("X-Target",  target.getYaw());
+    SmartDashboard.putNumber("Y-Target", target.getPitch());
+
+    
 
   }
 
@@ -78,6 +84,9 @@ public class LimeLightSubsystem extends SubsystemBase {
       }
     }
     groupTargets.add(copy.get(minIndex));
+    if(targetList.size()<2){
+      return groupTargets;
+    }
     copy.remove(minIndex);
     secondMin = copy.get(0).getYaw();
     minIndex = 0;

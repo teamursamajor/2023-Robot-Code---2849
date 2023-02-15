@@ -143,10 +143,10 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
         motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond * multipleSped);
 
-        System.out.println("Front Left: " + motorFrontLeftTalon.getSelectedSensorVelocity());
-        System.out.println("Front Right: " + motorFrontRightTalon.getSelectedSensorVelocity());
-        System.out.println("Back Left: " + motorBackLeftTalon.getSelectedSensorVelocity());
-        System.out.println("Back Right: " + motorBackRightTalon.getSelectedSensorVelocity());
+        //System.out.println("Front Left: " + motorFrontLeftTalon.getSelectedSensorVelocity());
+        //System.out.println("Front Right: " + motorFrontRightTalon.getSelectedSensorVelocity());
+        //System.out.println("Back Left: " + motorBackLeftTalon.getSelectedSensorVelocity());
+        //System.out.println("Back Right: " + motorBackRightTalon.getSelectedSensorVelocity());
 
     }
 

@@ -6,7 +6,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 public class LimeLightTestCommand extends CommandBase {
     private LimeLightSubsystem LIME_LIGHT;
     boolean high;
-
+    boolean isfinished = false;
     public LimeLightTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
         this.LIME_LIGHT = LIME_LIGHT;
         this.high = high;
@@ -15,7 +15,9 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        LIME_LIGHT.checkTargets();
+        if(!LIME_LIGHT.checkTargets()){
+            isfinished = true;
+        }
         if (high) {
             LIME_LIGHT.assignHigh();
         } else {
@@ -28,5 +30,12 @@ public class LimeLightTestCommand extends CommandBase {
         System.out.println("x: " + LIME_LIGHT.getYaw());
         System.out.println("y: " + LIME_LIGHT.getPitch());
     }
-
+    @Override
+    public void end(boolean interrupted) {
+        
+    }
+    @Override
+    public boolean isFinished() {
+        return isfinished;
+    }
 }
