@@ -1,5 +1,10 @@
 package frc.robot.commands;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimeLightSubsystem;
 
@@ -15,6 +20,7 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        System.out.println("Initalize)");
         if(!LIME_LIGHT.checkTargets()){
             isfinished = true;
         }
@@ -27,8 +33,10 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println("x: " + LIME_LIGHT.getYaw());
-        System.out.println("y: " + LIME_LIGHT.getPitch());
+        SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
+        SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+
+ 
     }
     @Override
     public void end(boolean interrupted) {
