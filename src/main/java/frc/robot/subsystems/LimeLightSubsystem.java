@@ -22,7 +22,6 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Constants.VisionConstants;
 import java.io.IOException;
   
 
@@ -35,19 +34,17 @@ public class LimeLightSubsystem extends SubsystemBase {
   private List<PhotonTrackedTarget> targetList;
   PhotonTrackedTarget target;
 
-  private PhotonCamera photonCamera;
   private PhotonPoseEstimator photonPoseEstimator;
 
   public LimeLightSubsystem() {
-    photonCamera = new PhotonCamera(VisionConstants.cameraName);
 
     try {
         // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
-        AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+        AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
         // Create pose estimator
         photonPoseEstimator =
                 new PhotonPoseEstimator(
-                        fieldLayout, PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.robotToCam);
+                        fieldLayout, PoseStrategy.MULTI_TAG_PNP, camera, null);// TODO: get cam position
         photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     } catch (IOException e) {
         // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we don't know
@@ -172,13 +169,15 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   }
 
+  
   public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
     if (photonPoseEstimator == null) {
         // The field layout failed to load, so we cannot estimate poses.
-        return null;
+        return null; // If fail to get position, null
     }
+  
     photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
-    return photonPoseEstimator.update();
+    return photonPoseEstimator.update().get();
   }
 
 }
