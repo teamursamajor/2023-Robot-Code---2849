@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.putNumber("Angle roll", (m_robotContainer.m_robotDrive.getAngleRoll() * -1) - 4 );
-    SmartDashboard.putNumber("Angle pitch", (m_robotContainer.m_robotDrive.getAnglePitch()+4));
+    SmartDashboard.putNumber("Angle pitch", (m_robotContainer.m_robotDrive.getAnglePitch() +4));
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
