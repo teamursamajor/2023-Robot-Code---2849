@@ -14,6 +14,18 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+//For AprilTags
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants.VisionConstants;
+import java.io.IOException;
+  
+
 public class LimeLightSubsystem extends SubsystemBase {
   double heightMid = 56.0; // the height of the mid pole in cm
   double heightHigh = 106; // the height of the high pole in cm
@@ -22,6 +34,28 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("OV5647");
   private List<PhotonTrackedTarget> targetList;
   PhotonTrackedTarget target;
+
+  private PhotonCamera photonCamera;
+  private PhotonPoseEstimator photonPoseEstimator;
+
+  public LimeLightSubsystem() {
+    photonCamera = new PhotonCamera(VisionConstants.cameraName);
+
+    try {
+        // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
+        AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+        // Create pose estimator
+        photonPoseEstimator =
+                new PhotonPoseEstimator(
+                        fieldLayout, PoseStrategy.MULTI_TAG_PNP, photonCamera, VisionConstants.robotToCam);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    } catch (IOException e) {
+        // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we don't know
+        // where the tags are.
+        DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
+        photonPoseEstimator = null;
+    }
+  }
 
   // give the horizontal distance from robot to the mid pole
   // angleOffSet is f=given by limelight (ty)
@@ -135,6 +169,16 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   public double getPitch() {
     return target.getPitch();
+
+  }
+
+  public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    if (photonPoseEstimator == null) {
+        // The field layout failed to load, so we cannot estimate poses.
+        return null;
+    }
+    photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+    return photonPoseEstimator.update();
   }
 
 }
