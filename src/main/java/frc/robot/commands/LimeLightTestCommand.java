@@ -12,6 +12,7 @@ public class LimeLightTestCommand extends CommandBase {
     private LimeLightSubsystem LIME_LIGHT;
     boolean high;
     boolean isfinished = false;
+
     public LimeLightTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
         this.LIME_LIGHT = LIME_LIGHT;
         this.high = high;
@@ -20,11 +21,13 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        isfinished = false;
+        SmartDashboard.putString("Stage", "Initlaze");
         System.out.println("Initalize)");
         if(!LIME_LIGHT.checkTargets()){
             isfinished = true;
         }
-        if (high) {
+        else if (high) {
             LIME_LIGHT.assignHigh();
         } else {
             LIME_LIGHT.assignMid();
@@ -33,14 +36,29 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
-        SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+        SmartDashboard.putString("Stage", "execute");
+        if(!LIME_LIGHT.checkTargets()){
+            isfinished = true;
+        }
+        else if (high) {
+            LIME_LIGHT.assignHigh();
+        } else {
+            LIME_LIGHT.assignMid();
+        }
 
+        if(!isfinished){
+            SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
+            SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+        }
+
+        SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
+        SmartDashboard.putBoolean("Target", isfinished);
  
     }
     @Override
     public void end(boolean interrupted) {
-        
+        SmartDashboard.putString("Stage", "end");
+        SmartDashboard.putBoolean("Target", isfinished);
     }
     @Override
     public boolean isFinished() {

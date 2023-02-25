@@ -47,6 +47,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Number", 0.0);
     SmartDashboard.putNumber("Target count",camera.getLatestResult().getTargets().size());
     
+  
     checkTargets();
     
     assignMid();
@@ -96,7 +97,7 @@ public class LimeLightSubsystem extends SubsystemBase {
         minIndex = i;
       }
     }
-    if (Math.abs(firstMin - secondMin) < 5) {
+    if (Math.abs(firstMin - secondMin) < 10) {
       groupTargets.add(copy.get(minIndex));
     }
     return groupTargets;
@@ -112,7 +113,7 @@ public class LimeLightSubsystem extends SubsystemBase {
       } else {
         target = groupTargets.get(0);
       }
-    }
+  }
   }
 
   // assign high target
@@ -125,16 +126,21 @@ public class LimeLightSubsystem extends SubsystemBase {
         target = groupTargets.get(1);
       }
     }
+    
     target = groupTargets.get(0);
   }
 
-  // if both 0.0 fdidn;t detect target
+  
   public double getYaw() {
     return target.getYaw();
   }
 
   public double getPitch() {
     return target.getPitch();
+  }
+
+  public double getSize(){
+    return targetList.size();
   }
 
 }

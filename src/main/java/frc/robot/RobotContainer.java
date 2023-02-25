@@ -10,6 +10,7 @@ import frc.robot.commands.AutoPistonClawCommand;
 import frc.robot.commands.LimeLightTestCommand;
 import frc.robot.commands.AutoArmPistonCommand;
 import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.AutoConeDropCommand;
 import frc.robot.commands.ManualArmCommand;
 import frc.robot.commands.ManualActuatorClawCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -81,16 +82,19 @@ public class RobotContainer {
     // right bumper --> toggle claw
     // right trigger --> toggle arm
 
-    XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
+    //XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
     // XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem,
     // false));
     // XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem,
     // true));
 
-    XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
-    XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
-    //XBOX_CONTROLLER.x().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, false));
-    XBOX_CONTROLLER.y().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, true));
+    //XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
+    //XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
+    XBOX_CONTROLLER.b().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, false));
+    XBOX_CONTROLLER.a().whileTrue(new LimeLightTestCommand(m_LimeLightSubsystem, true));
+    XBOX_CONTROLLER.x().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
+    XBOX_CONTROLLER.y().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
+
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -9,10 +10,9 @@ public class AutoConeDropCommand extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     double armLength; // horizontal length of arm when arm is fully extended
     double xValue; // limelght deteced x value
-    double centerX; // x value of where reflective tape needs to be in order to be aligned with arm
-    double range; // decied on a range
-    double distance; // used methods in the subsystem to gt the distance
-    double ofSetAngle; // ty
+    double centerX = 0; // x value of where reflective tape needs to be in order to be aligned with arm
+    double range = 2; // decied on a range
+    double distance; // used methods in the subsystem to get the distance
     boolean isHigh;
     boolean xAligned;
     boolean alignFinished;
@@ -32,12 +32,12 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        // stop robot, turn off controls.
+        // stop robot
+        DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
             alignFinished = true;
-        }
-        if (isHigh) {
+        }else if (isHigh) {
             LIME_LIGHT.assignHigh();
         } else {
             LIME_LIGHT.assignMid();
@@ -47,36 +47,53 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (isHigh) {
-            distance = LIME_LIGHT.getDistanceHigh();
-        } else {
-            distance = LIME_LIGHT.getDistanceMid();
+        if(!LIME_LIGHT.checkTargets()){
+            alignFinished = true;
+        }else if (isHigh) {
+            LIME_LIGHT.assignHigh();
+        }else {
+            LIME_LIGHT.assignMid();
         }
 
-        double x = LIME_LIGHT.getYaw();
-
-        if (!xAligned) {
-            if (x == Double.MIN_VALUE) {
-                System.out.println("Couldn't detect limelight");
-                return;
-            } else if (x <= (centerX + range) && x >= (centerX - range)) {
-                // stop robot set speed 0
-                DRIVE_SUBSYSTEM.drive(0, 0, 0);
-                xAligned = true;
-            } else if (x > centerX + range) {
-                DRIVE_SUBSYSTEM.drive(0, .25, 0);
-            } else if (x < centerX - range) {
-                DRIVE_SUBSYSTEM.drive(0, .25, 0);
+        if(!alignFinished){
+            if (isHigh) {
+                distance = LIME_LIGHT.getDistanceHigh();
+            } else {
+                distance = LIME_LIGHT.getDistanceMid();
             }
-        } else {
-            if (distance <= armLength + range && distance >= armLength - range) {
+            SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
+            SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
+            SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+            SmartDashboard.putNumber("Distance", distance );
+    
+            double x = LIME_LIGHT.getYaw();
+            if (!xAligned) {
+                if (x <= (centerX + range) && x >= (centerX - range)) {
+                    // stop robot set speed 0
+                    //is aligned
+                    DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
+                    xAligned = true;
+                } else if (x > centerX + range) {
+                    DRIVE_SUBSYSTEM.driveSim(0, -.25, 0);
+                } else if (x < centerX - range) {
+                    DRIVE_SUBSYSTEM.driveSim(0, .25, 0);
+                }
+            } else {
+                /* 
+                if (distance <= armLength + range && distance >= armLength - range) {
+                    alignFinished = true;
+                } else if (distance > armLength + range) {
+                    // go foward
+                    DRIVE_SUBSYSTEM.drive(.15, 0, 0);
+                } else if (distance < armLength - range) {
+                    // go backward
+                    DRIVE_SUBSYSTEM.drive(-.15, 0, 0);
+                }
+                */
                 alignFinished = true;
-            } else if (distance > armLength + range) {
-                // go foward
-            } else if (distance < armLength - range) {
-                // go backward
             }
         }
+        
 
     }
 
@@ -84,6 +101,8 @@ public class AutoConeDropCommand extends CommandBase {
     public void end(boolean interrupted) {
         // stop robot
         // drop cone
+        DRIVE_SUBSYSTEM.driveSim(0,0,0);
+
     }
 
     @Override
