@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class LimeLightTestCommand extends CommandBase {
+public class ReflectiveTapeTestCommand extends CommandBase {
     private LimeLightSubsystem LIME_LIGHT;
     boolean high;
     boolean isfinished = false;
 
-    public LimeLightTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
+    public ReflectiveTapeTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
         this.LIME_LIGHT = LIME_LIGHT;
         this.high = high;
         addRequirements(LIME_LIGHT);
@@ -22,15 +22,16 @@ public class LimeLightTestCommand extends CommandBase {
     @Override
     public void initialize() {
         isfinished = false;
+        LIME_LIGHT.reflectiveTapePipline();
         SmartDashboard.putString("Stage", "Initlaze");
-       // System.out.println("Initalize)");
-       //  if(!LIME_LIGHT.checkTargets()){
-         //   isfinished = true;
-       // } else else if (high) {
-       //     LIME_LIGHT.assignHigh();
-       // } else {
-       //     LIME_LIGHT.assignMid();
-       // }
+        System.out.println("Initalize)");
+        if(!LIME_LIGHT.checkTargets()){
+            isfinished = true;
+        } else if (high) {
+            LIME_LIGHT.assignHigh();
+        } else {
+            LIME_LIGHT.assignMid();
+        }
     }
 
     @Override
@@ -50,9 +51,11 @@ public class LimeLightTestCommand extends CommandBase {
             SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
         }
 
-LIME_LIGHT.aprilTagsTest();
+        /* 
+        LIME_LIGHT.aprilTagsTest();
         SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
         SmartDashboard.putBoolean("Target", isfinished);
+        */
  
     }
     @Override

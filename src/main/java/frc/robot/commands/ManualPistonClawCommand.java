@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class AutoPistonClawCommand extends CommandBase {
+public class ManualPistonClawCommand extends CommandBase {
     boolean isFinished = false;
     private final ArmSubsystem ARM_SUBSYSTEM;
 
-    public AutoPistonClawCommand(ArmSubsystem ARM_SUBSYSTEM) {
+    public ManualPistonClawCommand(ArmSubsystem ARM_SUBSYSTEM) {
         this.ARM_SUBSYSTEM = ARM_SUBSYSTEM;
         addRequirements(ARM_SUBSYSTEM);
     }

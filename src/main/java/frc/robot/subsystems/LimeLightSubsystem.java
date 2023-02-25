@@ -64,6 +64,14 @@ public class LimeLightSubsystem extends SubsystemBase {
     }
   }
 
+  public void aprilTagPipline(){
+    camera.setPipelineIndex(0);
+  }
+
+  public void reflectiveTapePipline(){
+    camera.setPipelineIndex(1);
+  }
+
   // give the horizontal distance from robot to the mid pole
   // angleOffSet is f=given by limelight (ty)
   public double getDistanceMid() {

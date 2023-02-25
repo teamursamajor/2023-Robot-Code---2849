@@ -26,11 +26,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmSubsystem extends SubsystemBase {
     // control for closing claw
     private DoubleSolenoid clawSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 15);
-    // private Servo clawServo = new Servo(0);
     private Talon winchMotorTalon = new Talon(0); // REPLACE
     private DoubleSolenoid armSol = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 10);
-    // private VictorSP winchMotorVictor = new VictorSP(0);
-    // private Spark winchMotorVictor = new Spark(0);
+
 
     // this will somehow tell us if we are overextending the arm
     private DigitalInput topLimitSwitch = new DigitalInput(1); // CHANGE PORT IT IS A FILLER
@@ -41,22 +39,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     public ArmSubsystem() {
         // clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
-
         // winchMotorTalon.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();
-        //setClawSol(true);
-        //setArmSol(true);
+        setClawSol(true);
+        setArmSol(true);
     }
 
     public void setMotorTalon(double speed) {
         winchMotorTalon.set(speed);
-        // set(TalonFXControlMode.PercentOutput, speed);
-    }
-
-    public void setMotorVictor(double speed) {
-        // System.out.println("Motor Moment: " + speed);
-        // winchMotorVictor.set(speed);
     }
 
     public boolean getTopSwitch() {

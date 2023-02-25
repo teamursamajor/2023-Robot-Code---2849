@@ -33,6 +33,7 @@ public class AutoConeDropCommand extends CommandBase {
     @Override
     public void initialize() {
         // stop robot
+        LIME_LIGHT.reflectiveTapePipline();
         DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
