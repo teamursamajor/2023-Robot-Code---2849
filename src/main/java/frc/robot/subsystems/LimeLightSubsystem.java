@@ -6,6 +6,7 @@ import java.util.List;
 import org.photonvision.PhotonUtils;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -33,6 +34,15 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("OV5647");
   private List<PhotonTrackedTarget> targetList;
   PhotonTrackedTarget target;
+
+ // PhotonPipelineResult result  = camera.getLatestResult();
+
+ // boolean hasTargets = result.hasTargets();
+  //PhotonTrackedTarget target = result.getBestTarget();
+ // int targetId = target.getFiducialId();
+
+
+
 
   private PhotonPoseEstimator photonPoseEstimator;
 
@@ -179,5 +189,10 @@ public class LimeLightSubsystem extends SubsystemBase {
     photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
     return photonPoseEstimator.update().get();
   }
-
+public void aprilTagsTest(){
+  if(checkTargets()){
+    PhotonTrackedTarget Target=targetList.get(0);
+    SmartDashboard.putNumber("ID",Target.getFiducialId());
+  }
+}
 }

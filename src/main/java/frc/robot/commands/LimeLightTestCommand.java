@@ -20,30 +20,41 @@ public class LimeLightTestCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        System.out.println("Initalize)");
-        if(!LIME_LIGHT.checkTargets()){
-            isfinished = true;
-        }
-        if (high) {
-            LIME_LIGHT.assignHigh();
-        } else {
-            LIME_LIGHT.assignMid();
-        }
+       // System.out.println("Initalize)");
+       //  if(!LIME_LIGHT.checkTargets()){
+         //   isfinished = true;
+       // } else if (high) {
+       //     LIME_LIGHT.assignHigh();
+       // } else {
+       //     LIME_LIGHT.assignMid();
+       // }
     }
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
-        SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+        System.out.println("execute");
+        //testapriltags
+    //    if(!LIME_LIGHT.checkTargets()){
+     //       isfinished = true;
+    //    } else if (high) {
+     //       LIME_LIGHT.assignHigh();
+    //    } else {
+     //       LIME_LIGHT.assignMid();
+    //    }
+//test apriltags
+    //    SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
+     //   SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
 
+LIME_LIGHT.aprilTagsTest();
  
     }
     @Override
     public void end(boolean interrupted) {
-        
     }
+        
+
     @Override
     public boolean isFinished() {
         return isfinished;
     }
-}
+}                                   

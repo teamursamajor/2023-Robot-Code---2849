@@ -36,8 +36,7 @@ public class AutoConeDropCommand extends CommandBase {
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
             alignFinished = true;
-        }
-        if (isHigh) {
+        }else if (isHigh) {
             LIME_LIGHT.assignHigh();
         } else {
             LIME_LIGHT.assignMid();
@@ -47,6 +46,14 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public void execute() {
+        if (!LIME_LIGHT.checkTargets()) {
+            alignFinished = true;
+        }else if (isHigh) {
+            LIME_LIGHT.assignHigh();
+        }else {
+            LIME_LIGHT.assignMid();
+        }
+
         if (isHigh) {
             distance = LIME_LIGHT.getDistanceHigh();
         } else {
@@ -88,7 +95,6 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-
         return alignFinished;
     }
 
