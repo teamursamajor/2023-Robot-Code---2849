@@ -6,6 +6,7 @@ import java.util.List;
 import org.photonvision.PhotonUtils;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -13,6 +14,17 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+//For AprilTags
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import edu.wpi.first.wpilibj.DriverStation;
+import java.io.IOException;
+  
 
 public class LimeLightSubsystem extends SubsystemBase {
   double heightMid = 56.0; // the height of the mid pole in cm
@@ -22,6 +34,35 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("OV5647");
   private List<PhotonTrackedTarget> targetList;
   PhotonTrackedTarget target;
+
+ // PhotonPipelineResult result  = camera.getLatestResult();
+
+ // boolean hasTargets = result.hasTargets();
+  //PhotonTrackedTarget target = result.getBestTarget();
+ // int targetId = target.getFiducialId();
+
+
+
+
+  private PhotonPoseEstimator photonPoseEstimator;
+
+  public LimeLightSubsystem() {
+
+    try {
+        // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
+        AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        // Create pose estimator
+        photonPoseEstimator =
+                new PhotonPoseEstimator(
+                        fieldLayout, PoseStrategy.MULTI_TAG_PNP, camera, null);// TODO: get cam position
+        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    } catch (IOException e) {
+        // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we don't know
+        // where the tags are.
+        DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
+        photonPoseEstimator = null;
+    }
+  }
 
   // give the horizontal distance from robot to the mid pole
   // angleOffSet is f=given by limelight (ty)
@@ -137,8 +178,25 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   public double getPitch() {
     return target.getPitch();
+
   }
 
+  
+  public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    if (photonPoseEstimator == null) {
+        // The field layout failed to load, so we cannot estimate poses.
+        return null; // If fail to get position, null
+    }
+  
+    photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+    return photonPoseEstimator.update().get();
+  }
+public void aprilTagsTest(){
+  if(checkTargets()){
+    PhotonTrackedTarget Target=targetList.get(0);
+    SmartDashboard.putNumber("ID",Target.getFiducialId());
+  }
+}
   public double getSize(){
     return targetList.size();
   }

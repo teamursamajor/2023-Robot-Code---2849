@@ -107,7 +107,6 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-
         return alignFinished;
     }
 
