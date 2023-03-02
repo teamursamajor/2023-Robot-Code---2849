@@ -12,6 +12,7 @@ public class ReflectiveTapeTestCommand extends CommandBase {
     private LimeLightSubsystem LIME_LIGHT;
     boolean high;
     boolean isfinished = false;
+    double distance;
 
     public ReflectiveTapeTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
         this.LIME_LIGHT = LIME_LIGHT;
@@ -24,7 +25,6 @@ public class ReflectiveTapeTestCommand extends CommandBase {
         isfinished = false;
         LIME_LIGHT.reflectiveTapePipline();
         SmartDashboard.putString("Stage", "Initlaze");
-        System.out.println("Initalize)");
         if(!LIME_LIGHT.checkTargets()){
             isfinished = true;
         } else if (high) {
@@ -47,8 +47,16 @@ public class ReflectiveTapeTestCommand extends CommandBase {
         }
 
         if(!isfinished){
+            if (high) {
+                distance = LIME_LIGHT.getDistanceHigh();
+            } else {
+                distance = LIME_LIGHT.getDistanceMid();
+            }
+            SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
             SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
             SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
+            SmartDashboard.putNumber("Distance", distance );
+            SmartDashboard.putNumber("pipline index", LIME_LIGHT.pipline());
         }
 
         /* 

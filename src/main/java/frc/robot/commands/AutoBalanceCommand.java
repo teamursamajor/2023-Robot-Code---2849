@@ -13,8 +13,8 @@ public class AutoBalanceCommand extends CommandBase {
     float previousAngle;
     int counter;
     boolean balanced;
-    double minValue = -4; // Change as needed
-    double maxValue = 4; // change as needed
+    double minValue = -2; // Change as needed
+    double maxValue = 7; // change as needed
     double range = 2;
     boolean onRamp; 
     int balancedCountLimit = 20;
@@ -48,8 +48,8 @@ public class AutoBalanceCommand extends CommandBase {
         testCounter++;
         SmartDashboard.putNumber("counter", testCounter);
         pitchAngle = driveSubsystem.getAnglePitch();
-        actualAngle = pitchAngle + 4; 
-        double speed = (double) actualAngle / 90;
+        actualAngle = pitchAngle; 
+        double speed = (double) actualAngle / 100;
         if ((actualAngle > maxValue) || (actualAngle < minValue)) {
             rampCounter++;
             if (rampCounter > rampCountLimit) {
@@ -78,7 +78,7 @@ public class AutoBalanceCommand extends CommandBase {
         }
         SmartDashboard.putBoolean("on ramp", onRamp);
 
-        if(testCounter>500){
+        if(testCounter>700){
             balanced=true;
         }
         

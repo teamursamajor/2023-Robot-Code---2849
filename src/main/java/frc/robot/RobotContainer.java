@@ -9,6 +9,7 @@ import static frc.robot.Constants.*;
 import frc.robot.commands.ManualPistonClawCommand;
 import frc.robot.commands.ReflectiveTapeTestCommand;
 import frc.robot.commands.ManualArmPistonCommand;
+import frc.robot.commands.AprilTagTestCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoConeDropCommand;
 import frc.robot.commands.ManualActuatorClawCommand;
@@ -97,6 +98,7 @@ public class RobotContainer {
     XBOX_CONTROLLER.y().onTrue(new AutoBalanceCommand(m_robotDrive));
     XBOX_CONTROLLER.rightBumper().onTrue(new ManualArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ManualPistonClawCommand(m_ArmSubsystem));
+    XBOX_CONTROLLER.x().whileTrue(new AprilTagTestCommand());
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

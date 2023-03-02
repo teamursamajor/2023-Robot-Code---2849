@@ -23,14 +23,16 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import java.io.IOException;
   
 
 public class LimeLightSubsystem extends SubsystemBase {
-  double heightMid = 56.0; // the height of the mid pole in cm
-  double heightHigh = 106; // the height of the high pole in cm
-  double heightOfCam = 30; // the hieght of the limelight camera meters to the ground, Change
-  double camAngle = 15.0; // angles of limelight camera, CHNAGE
+  double heightMid = 0.686; // the height of the mid pole in cm
+  double heightHigh = 1.168; // the height of the high pole in cm
+  double heightOfCam = .787; // the hieght of the limelight camera meters to the ground, Change
+  double camAngle = 0; // angles of limelight camera, CHNAGE
   private PhotonCamera camera = new PhotonCamera("OV5647");
   private List<PhotonTrackedTarget> targetList;
   PhotonTrackedTarget target;
@@ -47,7 +49,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonPoseEstimator photonPoseEstimator;
 
   public LimeLightSubsystem() {
-
+    Shuffleboard.getTab("Driver").addCamera("Limelight", camera.getName(), "http://photonvision.local:1182/stream.mjpg");
     try {
         // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
         AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -71,6 +73,10 @@ public class LimeLightSubsystem extends SubsystemBase {
   public void reflectiveTapePipline(){
     camera.setPipelineIndex(1);
   }
+  public int pipline(){
+    return camera.getPipelineIndex();
+  }
+
 
   // give the horizontal distance from robot to the mid pole
   // angleOffSet is f=given by limelight (ty)
@@ -80,6 +86,12 @@ public class LimeLightSubsystem extends SubsystemBase {
     // cameraPitch: radians, targetPitch: radians)
     double cameraPitchInRadians = camAngle * (Math.PI / 180);
     double targetPitchRadians = target.getPitch() * (Math.PI / 180);
+    SmartDashboard.putNumber("Target pitch", target.getPitch());
+    SmartDashboard.putNumber("Target pitchradians", targetPitchRadians);
+    SmartDashboard.putString("Type Align", "mid");
+    SmartDashboard.putNumber("cam height", heightOfCam);
+    SmartDashboard.putNumber("target height", heightMid);
+    SmartDashboard.putNumber("Cam pitch radians", cameraPitchInRadians);
     return PhotonUtils.calculateDistanceToTargetMeters(heightOfCam, heightMid, cameraPitchInRadians,
         targetPitchRadians);
     // return (heightMid-heightOfCam)/(Math.tan(totAngleToRadian));
@@ -88,6 +100,12 @@ public class LimeLightSubsystem extends SubsystemBase {
   public double getDistanceHigh() {
     double cameraPitchInRadians = camAngle * (Math.PI / 180);
     double targetPitchRadians = target.getPitch() * (Math.PI / 180);
+    SmartDashboard.putNumber("Target pitch", target.getPitch());
+    SmartDashboard.putNumber("Target pitchradians", targetPitchRadians);
+    SmartDashboard.putString("Type Align", "high");
+    SmartDashboard.putNumber("cam height", heightOfCam);
+    SmartDashboard.putNumber("target height", heightHigh);
+    SmartDashboard.putNumber("Cam pitch radians", cameraPitchInRadians);
     return PhotonUtils.calculateDistanceToTargetMeters(heightOfCam, heightHigh, cameraPitchInRadians,
         targetPitchRadians);
   }
@@ -168,6 +186,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   // assign high target
   public void assignHigh() {
     ArrayList<PhotonTrackedTarget> groupTargets = assignTargets();
+    target = groupTargets.get(0);
     if (groupTargets.size() == 2) {
       if (groupTargets.get(0).getPitch() > groupTargets.get(1).getPitch()) {
         target = groupTargets.get(0);
@@ -176,7 +195,6 @@ public class LimeLightSubsystem extends SubsystemBase {
       }
     }
     
-    target = groupTargets.get(0);
   }
 
   
@@ -195,11 +213,11 @@ public class LimeLightSubsystem extends SubsystemBase {
         // The field layout failed to load, so we cannot estimate poses.
         return null; // If fail to get position, null
     }
-  
     photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
     return photonPoseEstimator.update().get();
   }
 public void aprilTagsTest(){
+  //EstimatedRobotPose pose = getEstimatedGlobalPose(null)
   if(checkTargets()){
     PhotonTrackedTarget Target=targetList.get(0);
     SmartDashboard.putNumber("ID",Target.getFiducialId());

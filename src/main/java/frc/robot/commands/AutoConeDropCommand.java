@@ -7,7 +7,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoConeDropCommand extends CommandBase {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     double armLength; // horizontal length of arm when arm is fully extended
     double xValue; // limelght deteced x value
     double centerX = 0; // x value of where reflective tape needs to be in order to be aligned with arm
@@ -75,9 +74,9 @@ public class AutoConeDropCommand extends CommandBase {
                     DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
                     xAligned = true;
                 } else if (x > centerX + range) {
-                    DRIVE_SUBSYSTEM.driveSim(0, -.25, 0);
-                } else if (x < centerX - range) {
                     DRIVE_SUBSYSTEM.driveSim(0, .25, 0);
+                } else if (x < centerX - range) {
+                    DRIVE_SUBSYSTEM.driveSim(0, -.25, 0);
                 }
             } else {
                 /* 
