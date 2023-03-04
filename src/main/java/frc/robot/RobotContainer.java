@@ -75,9 +75,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // future bingdings:
     // sticks --> moving robot
-    // y --> auto balance
+    // x --> auto balance
     // pov up --> auto align with high pole
     // pov down --> auto align with low polw
     // right bumper --> toggle claw
@@ -95,10 +94,9 @@ public class RobotContainer {
     XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
     XBOX_CONTROLLER.povDown().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
     XBOX_CONTROLLER.povUp().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
-    XBOX_CONTROLLER.y().onTrue(new AutoBalanceCommand(m_robotDrive));
+    XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
     XBOX_CONTROLLER.rightBumper().onTrue(new ManualArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ManualPistonClawCommand(m_ArmSubsystem));
-    XBOX_CONTROLLER.x().whileTrue(new AprilTagTestCommand());
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }

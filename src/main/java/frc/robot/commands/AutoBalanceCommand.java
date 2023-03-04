@@ -1,39 +1,55 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
+import static frc.robot.Constants.*;
 
 public class AutoBalanceCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
 
-    float actualAngle;
-    float pitchAngle;
-    float previousAngle;
+    double actualAngle;
+    double pitchAngle;
     int counter;
+    double speed;
+    double angleDiff;
+    double angleDiffMax;
     boolean balanced;
-    double minValue = -2; // Change as needed
-    double maxValue = 7; // change as needed
+    double minValue = -5; // Change as needed
+    double maxValue = 5; // change as needed
     double range = 2;
+    double baseSpeed = 0.1;
+    double offset = 4;
+    double lastAngle;
     boolean onRamp; 
     int balancedCountLimit = 20;
     int balancedCount;
-    int rampCountLimit = 5;
+    int rampCountLimit = 20;
     int rampCounter;
     int testCounter;
+    int timer;
 
     public AutoBalanceCommand(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
+        debugTab.addNumber("counter", ()->{return testCounter;});
+        debugTab.addNumber("Ramp speed", ()->{return speed;}); 
+        debugTab.addBoolean("on ramp", ()->{return onRamp;});
+        debugTab.addNumber("Actual Angle", ()->{return actualAngle;});
+        debugTab.addBoolean("Balanced",()->{return balanced;});
     }
 
 
     @Override
     public void initialize() {
-        previousAngle = 0f;
+        timer = 0;
         counter = 0;
         rampCounter = 0;
+        lastAngle = 0;
+        pitchAngle = 0;
+        actualAngle = 0;
         balanced = false;
         onRamp = false;
         balancedCount = 0;
@@ -46,43 +62,40 @@ public class AutoBalanceCommand extends CommandBase {
     @Override
     public void execute() {
         testCounter++;
-        SmartDashboard.putNumber("counter", testCounter);
+        timer = (timer + 1) % 10;
+        
         pitchAngle = driveSubsystem.getAnglePitch();
-        actualAngle = pitchAngle; 
-        double speed = (double) actualAngle / 100;
-        if ((actualAngle > maxValue) || (actualAngle < minValue)) {
+        if(timer==0){
+            lastAngle = actualAngle;
+        }
+        actualAngle = pitchAngle - offset;
+
+        angleDiff = lastAngle - actualAngle;
+        speed = (double) actualAngle / 125;
+        if (((actualAngle > maxValue) || (actualAngle < minValue))) {
             rampCounter++;
             if (rampCounter > rampCountLimit) {
                 //out of range long enough that we know robot is on ramp
                 onRamp = true;
             }
-
         }else if(onRamp){
-            speed = 0.0;
             balancedCount++;
+            speed =0;
+            driveSubsystem.drive(0.0,0.0,0.0);
             if (balancedCount > balancedCountLimit) {
                 balanced = true;
             }
+            balancedCount=0;
         }
 
         if(onRamp){
-            if(speed == 0.0){
-
-            }else if(Math.abs(speed) < .1 && actualAngle < 0) {
-                speed = -0.1;
-            } else if (Math.abs(speed) < .1 && actualAngle > 0) {
-                speed = 0.1;
-            }
-            SmartDashboard.putNumber("Ramp speed", (speed ));  
+            if(Math.abs(speed) < baseSpeed && actualAngle < 0) {
+                speed = -baseSpeed;
+            } else if (Math.abs(speed) < baseSpeed && actualAngle > 0) {
+                speed = baseSpeed;
+            } 
             driveSubsystem.drive(-speed, 0.0, 0.0);
         }
-        SmartDashboard.putBoolean("on ramp", onRamp);
-
-        if(testCounter>700){
-            balanced=true;
-        }
-        
-        
         /* DO NOT DELETE
         if (Math.abs(actualAngle) < 4 && actualAngle < 0) {
             speed = -0.2;
@@ -127,7 +140,6 @@ public class AutoBalanceCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         driveSubsystem.drive(0.0, 0.0, 0.0);
-        System.out.println("end");
     }
 
      @Override

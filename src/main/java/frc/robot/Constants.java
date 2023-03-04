@@ -12,6 +12,8 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
@@ -34,6 +36,8 @@ public final class Constants {
   static Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
   static Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   static Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+  public static ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
+  public static ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 
   public static MecanumDriveKinematics m_kinematics = new MecanumDriveKinematics(
       m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);

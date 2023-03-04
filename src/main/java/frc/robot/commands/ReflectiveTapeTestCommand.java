@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimeLightSubsystem;
+import static frc.robot.Constants.*;
 
 public class ReflectiveTapeTestCommand extends CommandBase {
     private LimeLightSubsystem LIME_LIGHT;
@@ -24,7 +25,6 @@ public class ReflectiveTapeTestCommand extends CommandBase {
     public void initialize() {
         isfinished = false;
         LIME_LIGHT.reflectiveTapePipline();
-        SmartDashboard.putString("Stage", "Initlaze");
         if(!LIME_LIGHT.checkTargets()){
             isfinished = true;
         } else if (high) {
@@ -36,7 +36,6 @@ public class ReflectiveTapeTestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        SmartDashboard.putString("Stage", "execute");
         if(!LIME_LIGHT.checkTargets()){
             isfinished = true;
         }
@@ -52,11 +51,6 @@ public class ReflectiveTapeTestCommand extends CommandBase {
             } else {
                 distance = LIME_LIGHT.getDistanceMid();
             }
-            SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
-            SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
-            SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
-            SmartDashboard.putNumber("Distance", distance );
-            SmartDashboard.putNumber("pipline index", LIME_LIGHT.pipline());
         }
 
         /* 
@@ -68,8 +62,7 @@ public class ReflectiveTapeTestCommand extends CommandBase {
     }
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putString("Stage", "end");
-        SmartDashboard.putBoolean("Target", isfinished);
+        
     }
     @Override
     public boolean isFinished() {

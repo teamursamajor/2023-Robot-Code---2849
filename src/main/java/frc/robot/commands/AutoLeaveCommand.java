@@ -10,6 +10,7 @@ public class AutoLeaveCommand extends CommandBase {
 
     public AutoLeaveCommand(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
+        addRequirements(driveSubsystem);
     }
 
     @Override

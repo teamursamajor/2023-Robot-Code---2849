@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -109,12 +110,15 @@ public class DriveSubsystem extends SubsystemBase {
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
 
-        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight,
-                motorBackRight);
-        m_drive.setSafetyEnabled(false);
+        //m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight, motorBackRight);
+        //m_drive.setSafetyEnabled(false);
+        m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon, motorBackLeftTalon);
+        driverTab.add("Mecanum Drive", m_drive);
 
         zeroYaw();
-
+        driverTab.addNumber("Pitch", ()->{return getAnglePitch();});
+        driverTab.addNumber("Roll", ()->{return getAngleRoll();});
+        driverTab.addNumber("Yaw", ()->{return getAngleYaw();});
     }
 
     public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {
@@ -159,7 +163,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Rotation2d(getAngleYaw()));
     }
 
-    public float getAnglePitch() {
+    public float getAnglePitch() {//e
         return ahrs.getPitch();
     }
 
@@ -171,7 +175,7 @@ public class DriveSubsystem extends SubsystemBase {
         return ahrs.getYaw();
     }
 
-    public float getAngleRoll() {
+    public float getAngleRoll() {//e
         return ahrs.getRoll();
     }
 

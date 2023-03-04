@@ -100,8 +100,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Angle roll", (m_robotContainer.m_robotDrive.getAngleRoll() * -1) - 4 );
-    SmartDashboard.putNumber("Angle pitch", (m_robotContainer.m_robotDrive.getAnglePitch()));
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

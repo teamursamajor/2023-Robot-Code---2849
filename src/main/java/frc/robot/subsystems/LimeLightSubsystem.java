@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import java.io.IOException;
+
+import static frc.robot.Constants.*;
   
 
 public class LimeLightSubsystem extends SubsystemBase {
@@ -34,7 +36,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   double heightOfCam = .787; // the hieght of the limelight camera meters to the ground, Change
   double camAngle = 0; // angles of limelight camera, CHNAGE
   private PhotonCamera camera = new PhotonCamera("OV5647");
-  private List<PhotonTrackedTarget> targetList;
+  private List<PhotonTrackedTarget> targetList = new ArrayList<>();
   PhotonTrackedTarget target;
 
  // PhotonPipelineResult result  = camera.getLatestResult();
@@ -49,7 +51,11 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonPoseEstimator photonPoseEstimator;
 
   public LimeLightSubsystem() {
-    Shuffleboard.getTab("Driver").addCamera("Limelight", camera.getName(), "http://photonvision.local:1182/stream.mjpg");
+    driverTab.addCamera("Limelight", camera.getName(), "http://photonvision.local:1182/stream.mjpg");
+    debugTab.addNumber("Height Mid", ()->{return heightMid;});
+    debugTab.addNumber("Height High", ()->{return heightHigh;});
+    debugTab.addNumber("Height Cam", ()->{return heightOfCam;});
+    debugTab.addNumber("Angle Cam", ()->{return camAngle;});
     try {
         // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
         AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -86,12 +92,6 @@ public class LimeLightSubsystem extends SubsystemBase {
     // cameraPitch: radians, targetPitch: radians)
     double cameraPitchInRadians = camAngle * (Math.PI / 180);
     double targetPitchRadians = target.getPitch() * (Math.PI / 180);
-    SmartDashboard.putNumber("Target pitch", target.getPitch());
-    SmartDashboard.putNumber("Target pitchradians", targetPitchRadians);
-    SmartDashboard.putString("Type Align", "mid");
-    SmartDashboard.putNumber("cam height", heightOfCam);
-    SmartDashboard.putNumber("target height", heightMid);
-    SmartDashboard.putNumber("Cam pitch radians", cameraPitchInRadians);
     return PhotonUtils.calculateDistanceToTargetMeters(heightOfCam, heightMid, cameraPitchInRadians,
         targetPitchRadians);
     // return (heightMid-heightOfCam)/(Math.tan(totAngleToRadian));
@@ -100,30 +100,15 @@ public class LimeLightSubsystem extends SubsystemBase {
   public double getDistanceHigh() {
     double cameraPitchInRadians = camAngle * (Math.PI / 180);
     double targetPitchRadians = target.getPitch() * (Math.PI / 180);
-    SmartDashboard.putNumber("Target pitch", target.getPitch());
-    SmartDashboard.putNumber("Target pitchradians", targetPitchRadians);
-    SmartDashboard.putString("Type Align", "high");
-    SmartDashboard.putNumber("cam height", heightOfCam);
-    SmartDashboard.putNumber("target height", heightHigh);
-    SmartDashboard.putNumber("Cam pitch radians", cameraPitchInRadians);
     return PhotonUtils.calculateDistanceToTargetMeters(heightOfCam, heightHigh, cameraPitchInRadians,
         targetPitchRadians);
   }
 
   public void test() {
-    SmartDashboard.putNumber("Number", 0.0);
-    SmartDashboard.putNumber("Target count",camera.getLatestResult().getTargets().size());
-    
   
     checkTargets();
     
     assignMid();
-
-    SmartDashboard.putNumber("X-Target",  target.getYaw());
-    SmartDashboard.putNumber("Y-Target", target.getPitch());
-
-    
-
   }
 
   // yaw -> x
@@ -199,12 +184,17 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   
   public double getYaw() {
-    return target.getYaw();
+    if (target != null) {
+      return target.getYaw();
+    }
+    return Double.MIN_VALUE;
   }
 
   public double getPitch() {
-    return target.getPitch();
-
+    if (target != null) {
+      return target.getPitch();
+    }
+    return Double.MIN_VALUE;
   }
 
   
@@ -219,12 +209,14 @@ public class LimeLightSubsystem extends SubsystemBase {
 public void aprilTagsTest(){
   //EstimatedRobotPose pose = getEstimatedGlobalPose(null)
   if(checkTargets()){
-    PhotonTrackedTarget Target=targetList.get(0);
-    SmartDashboard.putNumber("ID",Target.getFiducialId());
+    target=targetList.get(0);
   }
 }
-  public double getSize(){
-    return targetList.size();
+  public int getSize(){
+    if (target != null) {
+      return targetList.size();
+    }
+    return Integer.MIN_VALUE;
   }
 
 }

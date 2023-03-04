@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import static frc.robot.Constants.*;
 
 public class AutoConeDropCommand extends CommandBase {
     double armLength; // horizontal length of arm when arm is fully extended
@@ -25,8 +26,16 @@ public class AutoConeDropCommand extends CommandBase {
         DRIVE_SUBSYSTEM = driveSubsystem;
         LIME_LIGHT = limeLightSubsystem;
         ARM_SUBSYSTEM = armSubsystem;
+        if (isHigh) {
+            debugTab.addNumber("num of targets", ()->{return LIME_LIGHT.getSize();});
+            debugTab.addNumber("x", ()->{return LIME_LIGHT.getYaw();});
+            debugTab.addNumber("y", ()->{return LIME_LIGHT.getPitch();});
+            debugTab.addNumber("Distance", ()->{return distance;});
+            debugTab.addNumber("pipline index", ()->{return LIME_LIGHT.pipline();});
+        }
         addRequirements(DRIVE_SUBSYSTEM);
         addRequirements(LIME_LIGHT);
+        addRequirements(ARM_SUBSYSTEM);
     }
 
     @Override
@@ -61,10 +70,6 @@ public class AutoConeDropCommand extends CommandBase {
             } else {
                 distance = LIME_LIGHT.getDistanceMid();
             }
-            SmartDashboard.putNumber("num of targets", LIME_LIGHT.getSize());
-            SmartDashboard.putNumber("x", LIME_LIGHT.getYaw() );
-            SmartDashboard.putNumber("y", LIME_LIGHT.getPitch() );
-            SmartDashboard.putNumber("Distance", distance );
     
             double x = LIME_LIGHT.getYaw();
             if (!xAligned) {
@@ -92,6 +97,8 @@ public class AutoConeDropCommand extends CommandBase {
                 */
                 alignFinished = true;
             }
+        }else{
+            ARM_SUBSYSTEM.setClawSol(false);
         }
         
 
