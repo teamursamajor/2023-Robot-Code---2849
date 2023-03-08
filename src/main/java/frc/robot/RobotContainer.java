@@ -41,6 +41,7 @@ public class RobotContainer {
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
+  private AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
@@ -94,7 +95,7 @@ public class RobotContainer {
     XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
     XBOX_CONTROLLER.povDown().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
     XBOX_CONTROLLER.povUp().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
-    XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
+    XBOX_CONTROLLER.x().onTrue(autoBalanceCommand);
     XBOX_CONTROLLER.rightBumper().onTrue(new ManualArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ManualPistonClawCommand(m_ArmSubsystem));
 
@@ -109,10 +110,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
 
-    return new RunCommand(new Runnable() {
-      public void run() {
-        m_LimeLightSubsystem.test();
-      }
-    }, m_LimeLightSubsystem);
+    return autoBalanceCommand;
   }
 }

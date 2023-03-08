@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,24 +22,38 @@ public class AutoBalanceCommand extends CommandBase {
     double maxValue = 5; // change as needed
     double range = 2;
     double baseSpeed = 0.1;
-    double offset = 4;
+    double offset = 0;
     double lastAngle;
     boolean onRamp; 
-    int balancedCountLimit = 20;
+    int balancedCountLimit = 30;
     int balancedCount;
-    int rampCountLimit = 20;
+    int rampCountLimit = 50;
     int rampCounter;
     int testCounter;
     int timer;
+    double pidCalc;
+    PIDController ctrl;
 
     public AutoBalanceCommand(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
-        debugTab.addNumber("counter", ()->{return testCounter;});
+        //p 0.2
+        //d 0.002
+        // divide 12
+
+        //.18
+        //0.0
+        //.0018
+        ctrl = new PIDController(0.175, 0.0, 0.0005);
+        ctrl.setSetpoint(0.0);
+        ctrl.setTolerance(3);
         debugTab.addNumber("Ramp speed", ()->{return speed;}); 
         debugTab.addBoolean("on ramp", ()->{return onRamp;});
         debugTab.addNumber("Actual Angle", ()->{return actualAngle;});
         debugTab.addBoolean("Balanced",()->{return balanced;});
+        debugTab.addNumber("PID Calculation", ()->{return pidCalc;});
+        debugTab.addNumber("PID Drive", ()->{return pidCalc / 12;});
+        debugTab.addBoolean("PID atSetPoint", ()->{return ctrl.atSetpoint();});
     }
 
 
@@ -77,24 +92,30 @@ public class AutoBalanceCommand extends CommandBase {
             if (rampCounter > rampCountLimit) {
                 //out of range long enough that we know robot is on ramp
                 onRamp = true;
+                ctrl.reset();
             }
         }else if(onRamp){
-            balancedCount++;
-            speed =0;
-            driveSubsystem.drive(0.0,0.0,0.0);
-            if (balancedCount > balancedCountLimit) {
-                balanced = true;
+            if (ctrl.atSetpoint()) {
+                balancedCount++;
+                speed =0;
+                //driveSubsystem.drive(0.0,0.0,0.0);
+                if (balancedCount > balancedCountLimit) {
+                    balanced = true;
+                }
+            } else {
+                balancedCount=0;
             }
-            balancedCount=0;
         }
-
         if(onRamp){
+            pidCalc = ctrl.calculate(driveSubsystem.getAnglePitch());
+            /*
             if(Math.abs(speed) < baseSpeed && actualAngle < 0) {
                 speed = -baseSpeed;
             } else if (Math.abs(speed) < baseSpeed && actualAngle > 0) {
                 speed = baseSpeed;
             } 
-            driveSubsystem.drive(-speed, 0.0, 0.0);
+            */
+            driveSubsystem.drive((pidCalc / 16), 0.0, 0.0);
         }
         /* DO NOT DELETE
         if (Math.abs(actualAngle) < 4 && actualAngle < 0) {
@@ -144,7 +165,8 @@ public class AutoBalanceCommand extends CommandBase {
 
      @Override
     public boolean isFinished() {
-        return balanced;
+        //return balanced;
+        return false;
     }
     
 }

@@ -110,15 +110,19 @@ public class DriveSubsystem extends SubsystemBase {
         motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
 
-        //m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight, motorBackRight);
-        //m_drive.setSafetyEnabled(false);
-        m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon, motorBackLeftTalon);
-        driverTab.add("Mecanum Drive", m_drive);
+        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight, motorBackRight);
+        m_drive.setSafetyEnabled(false);
+        //m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon, motorBackLeftTalon);
+        //driverTab.add("Mecanum Drive", m_drive);
 
         zeroYaw();
         driverTab.addNumber("Pitch", ()->{return getAnglePitch();});
         driverTab.addNumber("Roll", ()->{return getAngleRoll();});
         driverTab.addNumber("Yaw", ()->{return getAngleYaw();});
+        debugTab.addNumber("Front Left Talon", ()->{return motorFrontLeftTalon.getSelectedSensorVelocity();});
+        debugTab.addNumber("Front Right Talon", ()->{return motorFrontRightTalon.getSelectedSensorVelocity();});
+        debugTab.addNumber("Back Left Talon", ()->{return motorBackLeftTalon.getSelectedSensorVelocity();});
+        debugTab.addNumber("Back Right Talon", ()->{return motorBackRightTalon.getSelectedSensorVelocity();});
     }
 
     public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {

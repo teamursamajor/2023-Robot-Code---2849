@@ -20,7 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
         System.out.println(clawSol.isFwdSolenoidDisabled());
         comp.enableDigital();   
         setClawSol(true);
-        setArmSol(false);
+        setArmSol(true);
     }
 
     public void setClawSol(boolean closeOrNot) {
