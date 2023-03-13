@@ -43,13 +43,13 @@ public class AutoConeDropCommand extends CommandBase {
     public void initialize() {
         // stop robot
         LIME_LIGHT.reflectiveTapePipline();
-        DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
+        DRIVE_SUBSYSTEM.drive(0, 0, 0);
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
             alignFinished = true;
         }else if (isHigh) {
             LIME_LIGHT.assignHigh();
-            correctDistance = 1.97; //placeholder
+            correctDistance = 1.62; //placeholder
         } else {
             LIME_LIGHT.assignMid();
             correctDistance = 0.64; //placeholder//negative???
@@ -71,63 +71,54 @@ public class AutoConeDropCommand extends CommandBase {
         SmartDashboard.putBoolean("yaw align", yawAligned);
         SmartDashboard.putBoolean("x aligned", xAligned);
         SmartDashboard.putBoolean("y aligned", distanceAligned);
-        if(!LIME_LIGHT.checkTargets()){
-            alignFinished = true;
-        }else if (isHigh) {
-            LIME_LIGHT.assignHigh();
-        }else {
-            LIME_LIGHT.assignMid();
+
+        System.out.println(yawAligned);
+        if(!yawAligned){
+            if(DRIVE_SUBSYSTEM.getAngleYaw() >= DRIVE_SUBSYSTEM.getYawAlign()-1.5 && DRIVE_SUBSYSTEM.getAngleYaw() <= DRIVE_SUBSYSTEM.getYawAlign()+1.5){
+                yawAligned = true;
+                DRIVE_SUBSYSTEM.drive(0.0, 0.0, 0.0);
+            }else if(DRIVE_SUBSYSTEM.getAngleYaw()>DRIVE_SUBSYSTEM.getYawAlign()){
+                DRIVE_SUBSYSTEM.drive(0.0, 0.0, -.3);
+            }else{  
+                DRIVE_SUBSYSTEM.drive(0.0, 0.0, .3);
+                
+            }
         }
 
-        if(DRIVE_SUBSYSTEM.getAngleYaw() >= DRIVE_SUBSYSTEM.getYawAlign()-range && DRIVE_SUBSYSTEM.getAngleYaw() <= DRIVE_SUBSYSTEM.getYawAlign()+range){
-            yawAligned = true;
-            DRIVE_SUBSYSTEM.drive(0.0, 0.0, 0.0);
-        }else if(DRIVE_SUBSYSTEM.getAngleYaw()>DRIVE_SUBSYSTEM.getYawAlign()){
-            yawAligned = false;
-            DRIVE_SUBSYSTEM.drive(0.0, 0.0, -.1);
-        }else{
-            yawAligned = false;
-            DRIVE_SUBSYSTEM.drive(0.0, 0.0, .1);
-        }
-
-
-        if(!alignFinished && yawAligned){
+        if(yawAligned){
+            if(!LIME_LIGHT.checkTargets()){
+                alignFinished = true;
+            }else if (isHigh) {
+                LIME_LIGHT.assignHigh();
+            }else {
+                LIME_LIGHT.assignMid();
+            }
+    
             if (isHigh) {
                 distance = LIME_LIGHT.getDistanceHigh();
             } else {
                 distance = LIME_LIGHT.getDistanceMid();
             }
-    
+        }
+        
+        
+        if(!alignFinished && yawAligned && !xAligned){
             double x = LIME_LIGHT.getYaw();
-            if (!xAligned) {
                 if (x <= (centerX + range) && x >= (centerX - range)) {
                     // stop robot set speed 0
                     //is aligned
-                    DRIVE_SUBSYSTEM.driveSim(0, 0, 0);
+                    DRIVE_SUBSYSTEM.drive(0, 0, 0);
                     xAligned = true;
                 } else if (x > centerX + range) {
-                    DRIVE_SUBSYSTEM.driveSim(0, .1, 0);
+                    DRIVE_SUBSYSTEM.drive(0, .1, 0);
                 } else if (x < centerX - range) {
-                    DRIVE_SUBSYSTEM.driveSim(0, -.1, 0);
+                    DRIVE_SUBSYSTEM.drive(0, -.1, 0);
                 }
-            }
-                /* 
-                if (distance <= armLength + range && distance >= armLength - range) {
-                    alignFinished = true;
-                } else if (distance > armLength + range) {
-                    // go foward
-                    DRIVE_SUBSYSTEM.drive(.15, 0, 0);
-                } else if (distance < armLength - range) {
-                    // go backward
-                    DRIVE_SUBSYSTEM.drive(-.15, 0, 0);
-                }
-                */
-                
+              
+            }  
             double y = LIME_LIGHT.getPitch();
-            /*if(xAligned && isHigh) {
-                alignFinished = true;
-            } 
-            */ 
+
+           /* 
             if( xAligned && distance >= correctDistance - .05 && distance <= correctDistance + .05) {
                 distanceAligned = true;
                 alignFinished = true;
@@ -136,16 +127,17 @@ public class AutoConeDropCommand extends CommandBase {
             } else {
                 DRIVE_SUBSYSTEM.drive(0.1, 0, 0);
             }
-        }
+            */
+        
     }
 
     @Override
     public void end(boolean interrupted) {
         // stop robot
         // drop cone
-
+       
         Timer.delay(3);
-        DRIVE_SUBSYSTEM.driveSim(0,0,0);
+        DRIVE_SUBSYSTEM.drive(0,0,0);
         if(distanceAligned){
             if(isHigh){
                 ARM_SUBSYSTEM.setClawSol(true);
@@ -161,7 +153,7 @@ public class AutoConeDropCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return alignFinished;
+        return xAligned;
     }
 
 }
