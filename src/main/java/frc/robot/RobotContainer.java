@@ -12,6 +12,7 @@ import frc.robot.commands.ManualArmPistonCommand;
 import frc.robot.commands.AprilTagTestCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoConeDropCommand;
+import frc.robot.commands.AutoLeaveBackwards;
 import frc.robot.commands.ManualActuatorClawCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
   private AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
+  private AutoLeaveBackwards autoLeaveBackwards = new AutoLeaveBackwards(m_robotDrive);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
@@ -71,7 +73,7 @@ public class RobotContainer {
      * }
      * }, m_robotDrive));
      */
-
+    debugTab.add("AutoBalance", autoBalanceCommand);
     configureBindings();
   }
 
@@ -95,7 +97,7 @@ public class RobotContainer {
     XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
     XBOX_CONTROLLER.povDown().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
     XBOX_CONTROLLER.povUp().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
-    XBOX_CONTROLLER.x().onTrue(autoBalanceCommand);
+    XBOX_CONTROLLER.x().toggleOnTrue(autoBalanceCommand);
     XBOX_CONTROLLER.rightBumper().onTrue(new ManualArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ManualPistonClawCommand(m_ArmSubsystem));
 
@@ -110,6 +112,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
 
-    return autoBalanceCommand;
+    //auto leave backwards followed by balance
+    return autoLeaveBackwards.andThen(autoBalanceCommand);
   }
 }

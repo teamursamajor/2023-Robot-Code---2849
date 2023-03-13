@@ -14,6 +14,8 @@ public class ReflectiveTapeTestCommand extends CommandBase {
     boolean high;
     boolean isfinished = false;
     double distance;
+    //x top 8
+    //y mid -9 -7
 
     public ReflectiveTapeTestCommand(LimeLightSubsystem LIME_LIGHT, boolean high) {
         this.LIME_LIGHT = LIME_LIGHT;
@@ -44,14 +46,18 @@ public class ReflectiveTapeTestCommand extends CommandBase {
         } else {
             LIME_LIGHT.assignMid();
         }
-
+        SmartDashboard.putNumber("Distance", distance);
+        
         if(!isfinished){
-            if (high) {
-                distance = LIME_LIGHT.getDistanceHigh();
-            } else {
+            if (!high) {
                 distance = LIME_LIGHT.getDistanceMid();
+            } else {
+                distance = LIME_LIGHT.getDistanceHigh();
             }
+            
+            
         }
+                      
 
         /* 
         LIME_LIGHT.aprilTagsTest();

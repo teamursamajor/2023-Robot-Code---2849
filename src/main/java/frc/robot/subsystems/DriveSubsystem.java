@@ -26,6 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
     private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
     private double frontLeft, frontRight, backLeft, backRight;
+    private float yawAligned;
 
     private final MecanumDrive m_drive;
     private double ratio = 12.75;
@@ -142,6 +143,11 @@ public class DriveSubsystem extends SubsystemBase {
         if (Math.abs(rotation) >= .1) {
             rotationSpeed = rotation * 6000;
         }
+        if (XBOX_CONTROLLER.getRightTriggerAxis() > 0.75) {
+            fowardBackSpeed *= 0.75;
+            leftRightSpeed *= 0.75;
+            rotationSpeed *= 0.75;
+        }
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
         double multipleSped = 1.17;
@@ -197,6 +203,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     public boolean isCalibrate() {
         return ahrs.isCalibrating();
+    }
+
+    public void setYawAlign(float yaw){
+        yawAligned = yaw;
+    }
+
+    public double getYawAlign(){
+        return (double)yawAligned;
     }
 
 }

@@ -59,6 +59,7 @@ public class AutoBalanceCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        System.err.println("AutoBalance init");
         timer = 0;
         counter = 0;
         rampCounter = 0;
@@ -71,11 +72,12 @@ public class AutoBalanceCommand extends CommandBase {
         testCounter =0;
         driveSubsystem.drive(0.0, 0.0, 0.0);
         // driveSubsystem.calibrate();
-        driveSubsystem.drive(-.3, 0.0, 0.0);
+        driveSubsystem.drive(-.5, 0.0, 0.0);
     }
 
     @Override
     public void execute() {
+        System.err.println("AutoBalance init");
         testCounter++;
         timer = (timer + 1) % 10;
         
@@ -160,6 +162,7 @@ public class AutoBalanceCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        System.err.println("AutoBalance init");
         driveSubsystem.drive(0.0, 0.0, 0.0);
     }
 

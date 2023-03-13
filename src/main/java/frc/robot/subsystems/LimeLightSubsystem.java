@@ -56,6 +56,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     debugTab.addNumber("Height High", ()->{return heightHigh;});
     debugTab.addNumber("Height Cam", ()->{return heightOfCam;});
     debugTab.addNumber("Angle Cam", ()->{return camAngle;});
+    /*
     try {
         // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
         AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -70,6 +71,7 @@ public class LimeLightSubsystem extends SubsystemBase {
         DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
         photonPoseEstimator = null;
     }
+    */
   }
 
   public void aprilTagPipline(){
