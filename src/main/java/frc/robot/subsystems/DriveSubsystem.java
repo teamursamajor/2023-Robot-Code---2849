@@ -143,10 +143,11 @@ public class DriveSubsystem extends SubsystemBase {
         if (Math.abs(rotation) >= .1) {
             rotationSpeed = rotation * 6000;
         }
-        if (XBOX_CONTROLLER.getRightTriggerAxis() > 0.75) {
-            fowardBackSpeed *= 0.75;
-            leftRightSpeed *= 0.75;
-            rotationSpeed *= 0.75;
+        System.out.println(XBOX_CONTROLLER.getRightTriggerAxis());
+        if (XBOX_CONTROLLER.getRightTriggerAxis() == 1) {
+            fowardBackSpeed *= 0.5;
+            leftRightSpeed *= 0.5;
+            rotationSpeed *= 0.5;
         }
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
