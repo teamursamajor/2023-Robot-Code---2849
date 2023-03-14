@@ -6,27 +6,16 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
-import frc.robot.commands.ManualPistonClawCommand;
+import frc.robot.commands.ClawCommand;
 import frc.robot.commands.ReflectiveTapeTestCommand;
-import frc.robot.commands.ManualArmPistonCommand;
-import frc.robot.commands.AprilTagTestCommand;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoConeDropCommand;
 import frc.robot.commands.AutoLeaveBackwards;
-import frc.robot.commands.ManualActuatorClawCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -85,21 +74,22 @@ public class RobotContainer {
     // right bumper --> toggle claw
     // left bumper --> toggle arm
 
-    //XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
+    // XBOX_CONTROLLER.x().onTrue(new AutoBalanceCommand(m_robotDrive));
     // XBOX_CONTROLLER.povDown().whileTrue(new ManualArmCommand(m_ArmSubsystem,
     // false));
     // XBOX_CONTROLLER.povUp().whileTrue(new ManualArmCommand(m_ArmSubsystem,
     // true));
 
-    //XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
-    //XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
+    // XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
+    // XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.b().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, false));
     XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
-    XBOX_CONTROLLER.povDown().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
+    XBOX_CONTROLLER.povDown()
+        .onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
     XBOX_CONTROLLER.povUp().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
     XBOX_CONTROLLER.x().toggleOnTrue(autoBalanceCommand);
-    XBOX_CONTROLLER.rightBumper().onTrue(new ManualArmPistonCommand(m_ArmSubsystem));
-    XBOX_CONTROLLER.leftBumper().onTrue(new ManualPistonClawCommand(m_ArmSubsystem));
+    XBOX_CONTROLLER.rightBumper().onTrue(new ArmCommand(m_ArmSubsystem));
+    XBOX_CONTROLLER.leftBumper().onTrue(new ClawCommand(m_ArmSubsystem));
 
     // new JoystickButton(XBOX_CONTROLLER, Button.kA.value).whileTrue
   }
@@ -112,7 +102,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
 
-    //auto leave backwards followed by balance
+    // auto leave backwards followed by balance
     return autoLeaveBackwards.andThen(autoBalanceCommand);
   }
 }

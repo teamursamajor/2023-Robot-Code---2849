@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -18,7 +17,7 @@ public class ArmSubsystem extends SubsystemBase {
         // clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
         // winchMotorTalon.setNeutralMode(NeutralMode.Brake);
         System.out.println(clawSol.isFwdSolenoidDisabled());
-        comp.enableDigital();   
+        comp.enableDigital();
         setClawSol(true);
         setArmSol(true);
     }

@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
-    boolean isFinished = false;
     DriveSubsystem drive;
+    private double slowScale = 0.5;
 
     public DriveCommand(DriveSubsystem drive) {
         this.drive = drive;
@@ -22,7 +22,12 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        drive.drive(XBOX_CONTROLLER.getLeftY() , XBOX_CONTROLLER.getLeftX() , XBOX_CONTROLLER.getRightX());
+        if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
+            drive.drive(XBOX_CONTROLLER.getLeftY() * slowScale, XBOX_CONTROLLER.getLeftX() * slowScale,
+                    XBOX_CONTROLLER.getRightX() * slowScale);
+        } else {
+            drive.drive(XBOX_CONTROLLER.getLeftY(), XBOX_CONTROLLER.getLeftX(), XBOX_CONTROLLER.getRightX());
+        }
         // drive.drive(-0.25, 0, 0);
     }
 
@@ -35,6 +40,6 @@ public class DriveCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return isFinished;
+        return false;
     }
 }

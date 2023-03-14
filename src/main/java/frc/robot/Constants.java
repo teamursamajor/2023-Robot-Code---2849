@@ -4,14 +4,8 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;

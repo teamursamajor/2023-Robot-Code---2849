@@ -6,29 +6,14 @@ import java.util.List;
 import org.photonvision.PhotonUtils;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//For AprilTags
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
-import java.io.IOException;
-
 import static frc.robot.Constants.*;
-  
 
 public class LimeLightSubsystem extends SubsystemBase {
   double heightMid = 0.686; // the height of the mid pole in cm
@@ -39,52 +24,63 @@ public class LimeLightSubsystem extends SubsystemBase {
   private List<PhotonTrackedTarget> targetList = new ArrayList<>();
   PhotonTrackedTarget target;
 
- // PhotonPipelineResult result  = camera.getLatestResult();
+  // PhotonPipelineResult result = camera.getLatestResult();
 
- // boolean hasTargets = result.hasTargets();
-  //PhotonTrackedTarget target = result.getBestTarget();
- // int targetId = target.getFiducialId();
-
-
-
+  // boolean hasTargets = result.hasTargets();
+  // PhotonTrackedTarget target = result.getBestTarget();
+  // int targetId = target.getFiducialId();
 
   private PhotonPoseEstimator photonPoseEstimator;
 
   public LimeLightSubsystem() {
     driverTab.addCamera("Limelight", camera.getName(), "http://photonvision.local:1182/stream.mjpg");
-    debugTab.addNumber("Height Mid", ()->{return heightMid;});
-    debugTab.addNumber("Height High", ()->{return heightHigh;});
-    debugTab.addNumber("Height Cam", ()->{return heightOfCam;});
-    debugTab.addNumber("Angle Cam", ()->{return camAngle;});
+    debugTab.addNumber("Height Mid", () -> {
+      return heightMid;
+    });
+    debugTab.addNumber("Height High", () -> {
+      return heightHigh;
+    });
+    debugTab.addNumber("Height Cam", () -> {
+      return heightOfCam;
+    });
+    debugTab.addNumber("Angle Cam", () -> {
+      return camAngle;
+    });
     /*
-    try {
-        // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
-        AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
-        // Create pose estimator
-        photonPoseEstimator =
-                new PhotonPoseEstimator(
-                        fieldLayout, PoseStrategy.MULTI_TAG_PNP, camera, null);// TODO: get cam position
-        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-    } catch (IOException e) {
-        // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we don't know
-        // where the tags are.
-        DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
-        photonPoseEstimator = null;
-    }
-    */
+     * try {
+     * // Attempt to load the AprilTagFieldLayout that will tell us where the tags
+     * are on the field.
+     * AprilTagFieldLayout fieldLayout = new
+     * AprilTagFieldLayout(AprilTagFields.k2023ChargedUp.m_resourceFile);
+     * // Create pose estimator
+     * photonPoseEstimator =
+     * new PhotonPoseEstimator(
+     * fieldLayout, PoseStrategy.MULTI_TAG_PNP, camera, null);// TODO: get cam
+     * position
+     * photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY
+     * );
+     * } catch (IOException e) {
+     * // The AprilTagFieldLayout failed to load. We won't be able to estimate poses
+     * if we don't know
+     * // where the tags are.
+     * DriverStation.reportError("Failed to load AprilTagFieldLayout",
+     * e.getStackTrace());
+     * photonPoseEstimator = null;
+     * }
+     */
   }
 
-  public void aprilTagPipline(){
+  public void aprilTagPipline() {
     camera.setPipelineIndex(0);
   }
 
-  public void reflectiveTapePipline(){
+  public void reflectiveTapePipline() {
     camera.setPipelineIndex(1);
   }
-  public int pipline(){
+
+  public int pipline() {
     return camera.getPipelineIndex();
   }
-
 
   // give the horizontal distance from robot to the mid pole
   // angleOffSet is f=given by limelight (ty)
@@ -107,9 +103,9 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
 
   public void test() {
-  
+
     checkTargets();
-    
+
     assignMid();
   }
 
@@ -139,7 +135,7 @@ public class LimeLightSubsystem extends SubsystemBase {
       }
     }
     groupTargets.add(copy.get(minIndex));
-    if(targetList.size()<2){
+    if (targetList.size() < 2) {
       return groupTargets;
     }
     copy.remove(minIndex);
@@ -167,7 +163,7 @@ public class LimeLightSubsystem extends SubsystemBase {
       } else {
         target = groupTargets.get(0);
       }
-  }
+    }
   }
 
   // assign high target
@@ -181,10 +177,9 @@ public class LimeLightSubsystem extends SubsystemBase {
         target = groupTargets.get(1);
       }
     }
-    
+
   }
 
-  
   public double getYaw() {
     if (target != null) {
       return target.getYaw();
@@ -199,22 +194,23 @@ public class LimeLightSubsystem extends SubsystemBase {
     return Double.MIN_VALUE;
   }
 
-  
   public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
     if (photonPoseEstimator == null) {
-        // The field layout failed to load, so we cannot estimate poses.
-        return null; // If fail to get position, null
+      // The field layout failed to load, so we cannot estimate poses.
+      return null; // If fail to get position, null
     }
     photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
     return photonPoseEstimator.update().get();
   }
-public void aprilTagsTest(){
-  //EstimatedRobotPose pose = getEstimatedGlobalPose(null)
-  if(checkTargets()){
-    target=targetList.get(0);
+
+  public void aprilTagsTest() {
+    // EstimatedRobotPose pose = getEstimatedGlobalPose(null)
+    if (checkTargets()) {
+      target = targetList.get(0);
+    }
   }
-}
-  public int getSize(){
+
+  public int getSize() {
     if (target != null) {
       return targetList.size();
     }
