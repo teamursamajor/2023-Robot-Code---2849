@@ -22,6 +22,7 @@ public class AutoLeaveBackwards extends CommandBase {
     @Override
     public void execute() {
         System.err.println("AutoLeaveBackwards exec");
+        //60 inches
         Timer.delay(.5);
         driveSubsystem.drive(.75, 0, 0);
         Timer.delay(3.8); // Change as needed

@@ -70,14 +70,6 @@ public class LimeLightSubsystem extends SubsystemBase {
      */
   }
 
-  public void aprilTagPipline() {
-    camera.setPipelineIndex(0);
-  }
-
-  public void reflectiveTapePipline() {
-    camera.setPipelineIndex(1);
-  }
-
   public int pipline() {
     return camera.getPipelineIndex();
   }

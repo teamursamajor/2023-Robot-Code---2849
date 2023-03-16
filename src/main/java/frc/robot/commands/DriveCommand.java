@@ -25,12 +25,15 @@ public class DriveCommand extends CommandBase {
         if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
             drive.drive(XBOX_CONTROLLER.getLeftY() * slowScale, XBOX_CONTROLLER.getLeftX() * slowScale,
                     XBOX_CONTROLLER.getRightX() * slowScale);
-        } else {
+        }else if(XBOX_CONTROLLER.getLeftTriggerAxis() >= 0.75){
+            drive.drive(-.1,0,0);
+        }else{
+            
             drive.drive(XBOX_CONTROLLER.getLeftY(), XBOX_CONTROLLER.getLeftX(), XBOX_CONTROLLER.getRightX());
         }
-        // drive.drive(-0.25, 0, 0);
+        
     }
-
+    
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
@@ -43,3 +46,5 @@ public class DriveCommand extends CommandBase {
         return false;
     }
 }
+
+

@@ -86,6 +86,9 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon.config_kI(0, 0.001, 30);
         motorBackRightTalon.config_kD(0, 5, 30);
 
+        motorBackLeftTalon.setInverted(true);
+        motorFrontLeftTalon.setInverted(true);
+
         zeroYaw();
         driverTab.addNumber("Pitch", () -> {
             return getAnglePitch();

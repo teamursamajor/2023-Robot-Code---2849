@@ -7,7 +7,6 @@ package frc.robot;
 import static frc.robot.Constants.*;
 
 import frc.robot.commands.ClawCommand;
-import frc.robot.commands.ReflectiveTapeTestCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.AutoConeDropCommand;
@@ -82,11 +81,12 @@ public class RobotContainer {
 
     // XBOX_CONTROLLER.b().onTrue(new AutoPistonClawCommand(m_ArmSubsystem));
     // XBOX_CONTROLLER.a().onTrue(new AutoArmPistonCommand(m_ArmSubsystem));
-    XBOX_CONTROLLER.b().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, false));
-    XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
-    XBOX_CONTROLLER.povDown()
+    //XBOX_CONTROLLER.b().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, false));
+    //XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
+    
+    XBOX_CONTROLLER.a()
         .onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
-    XBOX_CONTROLLER.povUp().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
+    XBOX_CONTROLLER.y().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
     XBOX_CONTROLLER.x().toggleOnTrue(autoBalanceCommand);
     XBOX_CONTROLLER.rightBumper().onTrue(new ArmCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ClawCommand(m_ArmSubsystem));

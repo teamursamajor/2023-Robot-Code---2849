@@ -41,7 +41,6 @@ public class AutoConeDropCommand extends CommandBase {
     @Override
     public void initialize() {
         // stop robot
-        LIME_LIGHT.reflectiveTapePipline();
         DRIVE_SUBSYSTEM.drive(0, 0, 0);
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
@@ -73,32 +72,33 @@ public class AutoConeDropCommand extends CommandBase {
 
         System.out.println(yawAligned);
         if (!yawAligned) {
-            if (DRIVE_SUBSYSTEM.getAngleYaw() >= DRIVE_SUBSYSTEM.getYawAlign() - 1.5
-                    && DRIVE_SUBSYSTEM.getAngleYaw() <= DRIVE_SUBSYSTEM.getYawAlign() + 1.5) {
+            if (DRIVE_SUBSYSTEM.getAngleYaw() >= DRIVE_SUBSYSTEM.getYawAlign() - .3
+                    && DRIVE_SUBSYSTEM.getAngleYaw() <= DRIVE_SUBSYSTEM.getYawAlign() + .3) {
                 yawAligned = true;
                 DRIVE_SUBSYSTEM.drive(0.0, 0.0, 0.0);
             } else if (DRIVE_SUBSYSTEM.getAngleYaw() > DRIVE_SUBSYSTEM.getYawAlign()) {
-                DRIVE_SUBSYSTEM.drive(0.0, 0.0, -.3);
+                DRIVE_SUBSYSTEM.drive(0.0, 0.0, -.2);
             } else {
-                DRIVE_SUBSYSTEM.drive(0.0, 0.0, .3);
+                DRIVE_SUBSYSTEM.drive(0.0, 0.0, .2);
 
             }
         }
 
         if (yawAligned) {
             if (!LIME_LIGHT.checkTargets()) {
-                alignFinished = true;
+                xAligned = true;
             } else if (isHigh) {
                 LIME_LIGHT.assignHigh();
             } else {
                 LIME_LIGHT.assignMid();
             }
 
-            if (isHigh) {
+            /*if (isHigh && !xAligned) {
                 distance = LIME_LIGHT.getDistanceHigh();
             } else {
                 distance = LIME_LIGHT.getDistanceMid();
             }
+            */
         }
 
         if (!alignFinished && yawAligned && !xAligned) {
@@ -136,7 +136,6 @@ public class AutoConeDropCommand extends CommandBase {
         // stop robot
         // drop cone
 
-        Timer.delay(3);
         DRIVE_SUBSYSTEM.drive(0, 0, 0);
         if (distanceAligned) {
             if (isHigh) {

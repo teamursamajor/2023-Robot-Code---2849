@@ -21,7 +21,6 @@ public class ReflectiveTapeTestCommand extends CommandBase {
     @Override
     public void initialize() {
         isfinished = false;
-        LIME_LIGHT.reflectiveTapePipline();
         if (!LIME_LIGHT.checkTargets()) {
             isfinished = true;
         } else if (high) {
