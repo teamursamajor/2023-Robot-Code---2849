@@ -49,14 +49,14 @@ public class AutoConeDropCommand extends CommandBase {
             alignFinished = true;
         }else if (isHigh) {
             LIME_LIGHT.assignHigh();
-            correctDistance = 1.62; //placeholder
+            correctDistance = 1.95; //placeholder
         } else {
             LIME_LIGHT.assignMid();
             correctDistance = 0.64; //placeholder//negative???
         }
 
-        xAligned = false;
-        yawAligned = false;
+        xAligned = true;
+        yawAligned = true;
         distanceAligned = false;
     }
 
@@ -84,6 +84,7 @@ public class AutoConeDropCommand extends CommandBase {
                 
             }
         }
+        
 
         if(yawAligned){
             if(!LIME_LIGHT.checkTargets()){
@@ -117,17 +118,22 @@ public class AutoConeDropCommand extends CommandBase {
               
             }  
             double y = LIME_LIGHT.getPitch();
-
-           /* 
-            if( xAligned && distance >= correctDistance - .05 && distance <= correctDistance + .05) {
+            
+            //System.out.println(distance);
+           
+           /* if(xAligned){
+            if(distance <= correctDistance + .05) {
                 distanceAligned = true;
                 alignFinished = true;
-            } else if(xAligned &&  distance >= correctDistance + .05) {
+                DRIVE_SUBSYSTEM.drive(0,0,0);
+            } else if(distance >= correctDistance + .09) {
                 DRIVE_SUBSYSTEM.drive(-0.1, 0, 0);
             } else {
                 DRIVE_SUBSYSTEM.drive(0.1, 0, 0);
             }
-            */
+           }
+           */
+            
         
     }
 

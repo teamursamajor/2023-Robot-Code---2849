@@ -22,6 +22,15 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
+        if(XBOX_CONTROLLER.povDown().getAsBoolean()){
+            drive.drive(.25, 0,0);
+        }else if(XBOX_CONTROLLER.povUp().getAsBoolean()){
+            drive.drive(-.25, 0,0);
+        }else if(XBOX_CONTROLLER.povLeft().getAsBoolean()){
+            drive.drive(0,-.25,0);
+        }else if(XBOX_CONTROLLER.povRight().getAsBoolean()){
+            drive.drive(0,.25, 0);
+        }
         drive.drive(XBOX_CONTROLLER.getLeftY() , XBOX_CONTROLLER.getLeftX() , XBOX_CONTROLLER.getRightX());
         // drive.drive(-0.25, 0, 0);
     }
