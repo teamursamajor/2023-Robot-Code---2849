@@ -55,8 +55,8 @@ public class AutoConeDropCommand extends CommandBase {
             correctDistance = 0.64; // placeholder//negative???
         }
 
-        xAligned = false;
-        yawAligned = false;
+        xAligned = true;
+        yawAligned = true;
         distanceAligned = false;
     }
 

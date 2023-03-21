@@ -24,12 +24,17 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        SmartDashboard.putNumber("Balance current Angle", drive.getAnglePitch());
-        if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
+        if(XBOX_CONTROLLER.povDown().getAsBoolean()){
+            drive.drive(.25, 0,0);
+        }else if(XBOX_CONTROLLER.povUp().getAsBoolean()){
+            drive.drive(-.25, 0,0);
+        }else if(XBOX_CONTROLLER.povLeft().getAsBoolean()){
+            drive.drive(0,-.25,0);
+        }else if(XBOX_CONTROLLER.povRight().getAsBoolean()){
+            drive.drive(0,.25, 0);
+        } else if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
             drive.drive(XBOX_CONTROLLER.getLeftY() * slowScale, XBOX_CONTROLLER.getLeftX() * slowScale,
                     XBOX_CONTROLLER.getRightX() * slowScale);
-        }else if(XBOX_CONTROLLER.getLeftTriggerAxis() >= 0.75){
-            drive.drive(-.1,0,0);
         }else{
             
             drive.drive(XBOX_CONTROLLER.getLeftY(), XBOX_CONTROLLER.getLeftX(), XBOX_CONTROLLER.getRightX());
