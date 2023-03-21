@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import static frc.robot.Constants.*;
@@ -20,7 +21,7 @@ public class AutoBalanceCommand extends CommandBase {
     double maxValue = 5; // change as needed
     double range = 2;
     double baseSpeed = 0.1;
-    double offset = 0;
+    double offset = 1;
     double lastAngle;
     boolean onRamp;
     int balancedCountLimit = 30;
@@ -89,6 +90,8 @@ public class AutoBalanceCommand extends CommandBase {
     @Override
     public void execute() {
         System.err.println("AutoBalance init");
+        SmartDashboard.putBoolean("On Ramp", onRamp);
+        SmartDashboard.putNumber("Balance current Angle", actualAngle);
         testCounter++;
         timer = (timer + 1) % 10;
 
@@ -96,7 +99,7 @@ public class AutoBalanceCommand extends CommandBase {
         if (timer == 0) {
             lastAngle = actualAngle;
         }
-        actualAngle = pitchAngle - offset;
+        actualAngle = pitchAngle + offset;
 
         angleDiff = lastAngle - actualAngle;
         speed = (double) actualAngle / 125;

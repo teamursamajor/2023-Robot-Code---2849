@@ -25,7 +25,7 @@ public class AutoLeaveBackwards extends CommandBase {
         //60 inches
         Timer.delay(.5);
         driveSubsystem.drive(.75, 0, 0);
-        Timer.delay(2.53); // Change as needed //prev 3.8
+        Timer.delay(3.2); // Change as needed //prev 3.8
         driveSubsystem.drive(0, 0, 0);
         Timer.delay(0.125);
         finished = true;

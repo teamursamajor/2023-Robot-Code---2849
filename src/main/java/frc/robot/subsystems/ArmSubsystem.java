@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import static frc.robot.Constants.*;
+
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,8 +20,14 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         // clawServo.setBounds(2, 1.8, 1.5, 1.2, 1); KEEP THIS
         // winchMotorTalon.setNeutralMode(NeutralMode.Brake);
-        System.out.println(clawSol.isFwdSolenoidDisabled());
+        /*PneumaticsControlModule control = new PneumaticsControlModule();
+        PneumaticHub control1 = new PneumaticHub();
+        */
+        //debugTab.addNumber("Pressure", ()->{return comp.getPressure();});
+        //comp.enableAnalog(75.0, 115.0);
+        //comp.enableHybrid(75, 115);
         comp.enableDigital();
+        System.out.println(clawSol.isFwdSolenoidDisabled());
         setClawSol(true);
         setArmSol(true);
     }

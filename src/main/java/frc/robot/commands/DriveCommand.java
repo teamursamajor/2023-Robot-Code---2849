@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import static frc.robot.Constants.*;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -22,6 +24,7 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
+        SmartDashboard.putNumber("Balance current Angle", drive.getAnglePitch());
         if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
             drive.drive(XBOX_CONTROLLER.getLeftY() * slowScale, XBOX_CONTROLLER.getLeftX() * slowScale,
                     XBOX_CONTROLLER.getRightX() * slowScale);

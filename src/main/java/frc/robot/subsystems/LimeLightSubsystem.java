@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.photonvision.PhotonUtils;
-
+import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -33,6 +33,8 @@ public class LimeLightSubsystem extends SubsystemBase {
   private PhotonPoseEstimator photonPoseEstimator;
 
   public LimeLightSubsystem() {
+    camera.setDriverMode(true);
+    camera.setLED(VisionLEDMode.kOff);
     driverTab.addCamera("Limelight", camera.getName(), "http://photonvision.local:1182/stream.mjpg");
     debugTab.addNumber("Height Mid", () -> {
       return heightMid;
@@ -207,6 +209,14 @@ public class LimeLightSubsystem extends SubsystemBase {
       return targetList.size();
     }
     return Integer.MIN_VALUE;
+  }
+
+  public void driverMode(boolean on){
+    camera.setDriverMode(on);
+  }
+
+  public void setLED(boolean onOff) {
+    camera.setLED(onOff ?  VisionLEDMode.kOn : VisionLEDMode.kOff);
   }
 
 }

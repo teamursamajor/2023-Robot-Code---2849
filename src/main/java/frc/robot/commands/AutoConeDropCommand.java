@@ -41,6 +41,8 @@ public class AutoConeDropCommand extends CommandBase {
     @Override
     public void initialize() {
         // stop robot
+        LIME_LIGHT.driverMode(false);
+        LIME_LIGHT.setLED(true);
         DRIVE_SUBSYSTEM.drive(0, 0, 0);
         alignFinished = false;
         if (!LIME_LIGHT.checkTargets()) {
@@ -147,6 +149,8 @@ public class AutoConeDropCommand extends CommandBase {
                 ARM_SUBSYSTEM.setArmSol(false);
             }
         }
+        LIME_LIGHT.driverMode(true);
+        LIME_LIGHT.setLED(false);
 
     }
 

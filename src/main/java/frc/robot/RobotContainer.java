@@ -14,6 +14,10 @@ import frc.robot.commands.AutoLeaveBackwards;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -32,6 +36,7 @@ public class RobotContainer {
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
   private AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(m_robotDrive);
   private AutoLeaveBackwards autoLeaveBackwards = new AutoLeaveBackwards(m_robotDrive);
+  //private SimpleWidget doRamp;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
@@ -62,6 +67,7 @@ public class RobotContainer {
      * }, m_robotDrive));
      */
     debugTab.add("AutoBalance", autoBalanceCommand);
+    //doRamp = driverTab.add("Do Ramp", BuiltInWidgets.kToggleButton);
     configureBindings();
   }
 
@@ -85,8 +91,8 @@ public class RobotContainer {
     //XBOX_CONTROLLER.a().whileTrue(new ReflectiveTapeTestCommand(m_LimeLightSubsystem, true));
     
     XBOX_CONTROLLER.a()
-        .onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
-    XBOX_CONTROLLER.y().onTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
+        .toggleOnTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, false));
+    XBOX_CONTROLLER.y().toggleOnTrue(new AutoConeDropCommand(m_robotDrive, m_LimeLightSubsystem, m_ArmSubsystem, true));
     XBOX_CONTROLLER.x().toggleOnTrue(autoBalanceCommand);
     XBOX_CONTROLLER.rightBumper().onTrue(new ArmCommand(m_ArmSubsystem));
     XBOX_CONTROLLER.leftBumper().onTrue(new ClawCommand(m_ArmSubsystem));
