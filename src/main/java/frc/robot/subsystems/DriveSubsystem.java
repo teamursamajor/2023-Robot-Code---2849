@@ -3,37 +3,21 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.SPI;
 
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-
 import static frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
-    private WPI_VictorSPX motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight;
     private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
-    private double frontLeft, frontRight, backLeft, backRight;
     private float yawAligned;
-
-    private final MecanumDrive m_drive;
-    private double ratio = 12.75;
-    private double targetMetersPerSec = 0.8;
-    private double wheelRadi = 0.1016; // radius in meters
-    private double wheelCirc = (2 * Math.PI) * wheelRadi; // circumference also in meters
-    private double wheelDist = wheelCirc * ratio; // gear ratio compensation
 
     AHRS ahrs = new AHRS(SPI.Port.kMXP);
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
@@ -54,10 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
     // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
 
     public DriveSubsystem() {
-        motorFrontLeft = new WPI_VictorSPX(3);
-        motorFrontRight = new WPI_VictorSPX(2);
-        motorBackLeft = new WPI_VictorSPX(0);
-        motorBackRight = new WPI_VictorSPX(1);
 
         motorFrontLeftTalon = new WPI_TalonFX(4);
         motorBackLeftTalon = new WPI_TalonFX(1);
@@ -106,24 +86,31 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon.config_kI(0, 0.001, 30);
         motorBackRightTalon.config_kD(0, 5, 30);
 
-        motorFrontLeft.setInverted(true);
-        motorBackLeft.setInverted(true);
-        motorFrontLeftTalon.setInverted(true);
         motorBackLeftTalon.setInverted(true);
-
-        m_drive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight, motorBackRight);
-        m_drive.setSafetyEnabled(false);
-        //m_drive = new MecanumDrive(motorFrontLeftTalon, motorBackLeftTalon, motorFrontRightTalon, motorBackLeftTalon);
-        //driverTab.add("Mecanum Drive", m_drive);
+        motorFrontLeftTalon.setInverted(true);
 
         zeroYaw();
-        driverTab.addNumber("Pitch", ()->{return getAnglePitch();});
-        driverTab.addNumber("Roll", ()->{return getAngleRoll();});
-        driverTab.addNumber("Yaw", ()->{return getAngleYaw();});
-        debugTab.addNumber("Front Left Talon", ()->{return motorFrontLeftTalon.getSelectedSensorVelocity();});
-        debugTab.addNumber("Front Right Talon", ()->{return motorFrontRightTalon.getSelectedSensorVelocity();});
-        debugTab.addNumber("Back Left Talon", ()->{return motorBackLeftTalon.getSelectedSensorVelocity();});
-        debugTab.addNumber("Back Right Talon", ()->{return motorBackRightTalon.getSelectedSensorVelocity();});
+        driverTab.addNumber("Pitch", () -> {
+            return getAnglePitch();
+        });
+        driverTab.addNumber("Roll", () -> {
+            return getAngleRoll();
+        });
+        driverTab.addNumber("Yaw", () -> {
+            return getAngleYaw();
+        });
+        debugTab.addNumber("Front Left Talon", () -> {
+            return motorFrontLeftTalon.getSelectedSensorVelocity();
+        });
+        debugTab.addNumber("Front Right Talon", () -> {
+            return motorFrontRightTalon.getSelectedSensorVelocity();
+        });
+        debugTab.addNumber("Back Left Talon", () -> {
+            return motorBackLeftTalon.getSelectedSensorVelocity();
+        });
+        debugTab.addNumber("Back Right Talon", () -> {
+            return motorBackRightTalon.getSelectedSensorVelocity();
+        });
     }
 
     public void driveDistance(double fowardBackDist, double leftRightDist, double rotation) {
@@ -143,12 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
         if (Math.abs(rotation) >= .1) {
             rotationSpeed = rotation * 6000;
         }
-        System.out.println(XBOX_CONTROLLER.getRightTriggerAxis());
-        if (XBOX_CONTROLLER.getRightTriggerAxis() == 1) {
-            fowardBackSpeed *= 0.5;
-            leftRightSpeed *= 0.5;
-            rotationSpeed *= 0.5;
-        }
+
         ChassisSpeeds speeds = new ChassisSpeeds(fowardBackSpeed, leftRightSpeed, rotationSpeed);
         MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
         double multipleSped = 1.17;
@@ -158,23 +140,18 @@ public class DriveSubsystem extends SubsystemBase {
         motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
         motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond * multipleSped);
 
-        //System.out.println("Front Left: " + motorFrontLeftTalon.getSelectedSensorVelocity());
-        //System.out.println("Front Right: " + motorFrontRightTalon.getSelectedSensorVelocity());
-        //System.out.println("Back Left: " + motorBackLeftTalon.getSelectedSensorVelocity());
-        //System.out.println("Back Right: " + motorBackRightTalon.getSelectedSensorVelocity());
+        // System.out.println("Front Left: " +
+        // motorFrontLeftTalon.getSelectedSensorVelocity());
+        // System.out.println("Front Right: " +
+        // motorFrontRightTalon.getSelectedSensorVelocity());
+        // System.out.println("Back Left: " +
+        // motorBackLeftTalon.getSelectedSensorVelocity());
+        // System.out.println("Back Right: " +
+        // motorBackRightTalon.getSelectedSensorVelocity());
 
     }
 
-    public void driveSim(double fowardBack, double leftRight, double rotation) {
-        m_drive.driveCartesian(fowardBack, leftRight, rotation);
-    }
-
-    public void driveField(double fowardBack, double leftRight, double rotation) {
-        // m_drive.driveCartesian(fowardBack, leftRight, rotation, new
-        // Rotation2d(getAngleYaw()));
-    }
-
-    public float getAnglePitch() {//e
+    public float getAnglePitch() {
         return ahrs.getPitch();
     }
 
@@ -186,7 +163,7 @@ public class DriveSubsystem extends SubsystemBase {
         return ahrs.getYaw();
     }
 
-    public float getAngleRoll() {//e
+    public float getAngleRoll() {
         return ahrs.getRoll();
     }
 
@@ -206,12 +183,12 @@ public class DriveSubsystem extends SubsystemBase {
         return ahrs.isCalibrating();
     }
 
-    public void setYawAlign(float yaw){
+    public void setYawAlign(float yaw) {
         yawAligned = yaw;
     }
 
-    public double getYawAlign(){
-        return (double)yawAligned;
+    public double getYawAlign() {
+        return (double) yawAligned;
     }
 
 }

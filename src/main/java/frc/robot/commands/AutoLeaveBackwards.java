@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class AutoLeaveBackwards extends CommandBase{
+public class AutoLeaveBackwards extends CommandBase {
     private DriveSubsystem driveSubsystem;
-    private boolean finished; 
+    private boolean finished;
 
     public AutoLeaveBackwards(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
@@ -18,9 +18,11 @@ public class AutoLeaveBackwards extends CommandBase{
         finished = false;
         System.err.println("AutoLeaveBackwards init");
     }
+
     @Override
     public void execute() {
         System.err.println("AutoLeaveBackwards exec");
+        //60 inches
         Timer.delay(.5);
         driveSubsystem.drive(.75, 0, 0);
         Timer.delay(3.8); // Change as needed
@@ -28,10 +30,12 @@ public class AutoLeaveBackwards extends CommandBase{
         Timer.delay(0.125);
         finished = true;
     }
+
     @Override
     public boolean isFinished() {
-        return finished;    
+        return finished;
     }
+
     @Override
     public void end(boolean interrupted) {
         System.err.println("AutoLeaveBackwards end");
