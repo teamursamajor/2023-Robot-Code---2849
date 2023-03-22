@@ -6,17 +6,18 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.SPI;
-
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
-    private WPI_TalonFX motorFrontLeftTalon, motorFrontRightTalon, motorBackLeftTalon, motorBackRightTalon;
     private float yawAligned;
 
     AHRS ahrs = new AHRS(SPI.Port.kMXP);
@@ -28,66 +29,12 @@ public class DriveSubsystem extends SubsystemBase {
     MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
-    // private final PWMSparkMax m_frontLeft = new
-    // PWMSparkMax(MECANUM_FRONT_LEFT_PORT);
-    // private final PWMSparkMax m_rearLeft = new
-    // PWMSparkMax(MECANUM_BACK_LEFT_PORT);
-    // private final PWMSparkMax m_frontRight = new
-    // PWMSparkMax(MECANUM_FRONT_RIGHT_PORT);
-    // private final PWMSparkMax m_rearRight = new
-    // PWMSparkMax(MECANUM_BACK_RIGHT_PORT);
+    private final Spark m_frontLeft = new Spark(0);
+    private final Spark m_rearLeft = new Spark(0);
+    private final Spark m_frontRight = new Spark(0);
+    private final Spark m_rearRight = new Spark(0);
 
     public DriveSubsystem() {
-
-        motorFrontLeftTalon = new WPI_TalonFX(4);
-        motorBackLeftTalon = new WPI_TalonFX(1);
-        motorFrontRightTalon = new WPI_TalonFX(0);
-        motorBackRightTalon = new WPI_TalonFX(3);
-
-        motorFrontLeftTalon.setNeutralMode(NeutralMode.Coast);
-        motorBackLeftTalon.setNeutralMode(NeutralMode.Coast);
-        motorFrontRightTalon.setNeutralMode(NeutralMode.Coast);
-        motorBackRightTalon.setNeutralMode(NeutralMode.Coast);
-
-        motorFrontLeftTalon.configFactoryDefault();
-        motorFrontLeftTalon.configNeutralDeadband(.01);
-
-        motorBackLeftTalon.configFactoryDefault();
-        motorBackLeftTalon.configNeutralDeadband(.01);
-
-        motorFrontRightTalon.configFactoryDefault();
-        motorFrontRightTalon.configNeutralDeadband(0.01);
-
-        motorBackRightTalon.configFactoryDefault();
-        motorBackRightTalon.configNeutralDeadband(0.01);
-
-        motorFrontLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-        motorFrontRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-        motorBackLeftTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-        motorBackRightTalon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-
-        motorFrontLeftTalon.config_kF(0, 1023.0 / 20660.0, 30);
-        motorFrontLeftTalon.config_kP(0, .1, 30);
-        motorFrontLeftTalon.config_kI(0, 0.001, 30);
-        motorFrontLeftTalon.config_kD(0, 5, 30);
-
-        motorBackLeftTalon.config_kF(0, 1023.0 / 20660.0, 30);
-        motorBackLeftTalon.config_kP(0, .1, 30);
-        motorBackLeftTalon.config_kI(0, 0.001, 30);
-        motorBackLeftTalon.config_kD(0, 5, 30);
-
-        motorFrontRightTalon.config_kF(0, 1023.0 / 20660.0, 30);
-        motorFrontRightTalon.config_kP(0, .1, 30);
-        motorFrontRightTalon.config_kI(0, 0.001, 30);
-        motorFrontRightTalon.config_kD(0, 5, 30);
-
-        motorBackRightTalon.config_kF(0, 1023.0 / 20660.0, 30);
-        motorBackRightTalon.config_kP(0, .1, 30);
-        motorBackRightTalon.config_kI(0, 0.001, 30);
-        motorBackRightTalon.config_kD(0, 5, 30);
-
-        motorBackLeftTalon.setInverted(true);
-        motorFrontLeftTalon.setInverted(true);
 
         zeroYaw();
         driverTab.addNumber("Pitch", () -> {
@@ -98,18 +45,6 @@ public class DriveSubsystem extends SubsystemBase {
         });
         driverTab.addNumber("Yaw", () -> {
             return getAngleYaw();
-        });
-        debugTab.addNumber("Front Left Talon", () -> {
-            return motorFrontLeftTalon.getSelectedSensorVelocity();
-        });
-        debugTab.addNumber("Front Right Talon", () -> {
-            return motorFrontRightTalon.getSelectedSensorVelocity();
-        });
-        debugTab.addNumber("Back Left Talon", () -> {
-            return motorBackLeftTalon.getSelectedSensorVelocity();
-        });
-        debugTab.addNumber("Back Right Talon", () -> {
-            return motorBackRightTalon.getSelectedSensorVelocity();
         });
     }
 
@@ -136,10 +71,10 @@ public class DriveSubsystem extends SubsystemBase {
         double multipleSped = 1.17;
 
         
-        motorFrontLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontLeftMetersPerSecond * multipleSped);
-        motorFrontRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.frontRightMetersPerSecond);
-        motorBackRightTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearRightMetersPerSecond);
-        motorBackLeftTalon.set(TalonFXControlMode.Velocity, wheelSpeeds.rearLeftMetersPerSecond * multipleSped);
+        m_frontLeft.set(wheelSpeeds.frontLeftMetersPerSecond * multipleSped);
+        m_frontRight.set(wheelSpeeds.frontRightMetersPerSecond);
+        m_rearRight.set(wheelSpeeds.rearRightMetersPerSecond);
+        m_rearLeft.set(wheelSpeeds.rearLeftMetersPerSecond * multipleSped);
 
         // System.out.println("Front Left: " +
         // motorFrontLeftTalon.getSelectedSensorVelocity());
