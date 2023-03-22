@@ -28,7 +28,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-    `
     private final Spark m_frontLeft = new Spark(3);
     private final Spark m_rearLeft = new Spark(1);
     private final Spark m_frontRight = new Spark(2);
