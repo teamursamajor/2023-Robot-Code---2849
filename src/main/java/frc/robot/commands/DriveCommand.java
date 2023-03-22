@@ -8,7 +8,8 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
     DriveSubsystem drive;
-    private double slowScale = 0.5;
+    private double slowScale = 0.25;
+    private double dpad = 0.75;
 
     public DriveCommand(DriveSubsystem drive) {
         this.drive = drive;
@@ -24,21 +25,33 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
+        double fowardBack = XBOX_CONTROLLER.getLeftY();
+        double leftRight = XBOX_CONTROLLER.getLeftX();
+        double rotation = XBOX_CONTROLLER.getRightX();
         if(XBOX_CONTROLLER.povDown().getAsBoolean()){
-            drive.drive(.25, 0,0);
+            fowardBack = dpad;
+            leftRight = 0;
+            rotation = 0;
         }else if(XBOX_CONTROLLER.povUp().getAsBoolean()){
-            drive.drive(-.25, 0,0);
+            fowardBack = -dpad;
+            leftRight = 0;
+            rotation = 0;
         }else if(XBOX_CONTROLLER.povLeft().getAsBoolean()){
-            drive.drive(0,-.25,0);
+            fowardBack = 0;
+            leftRight = -dpad;
+            rotation = 0;
         }else if(XBOX_CONTROLLER.povRight().getAsBoolean()){
-            drive.drive(0,.25, 0);
-        } else if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
-            drive.drive(XBOX_CONTROLLER.getLeftY() * slowScale, XBOX_CONTROLLER.getLeftX() * slowScale,
-                    XBOX_CONTROLLER.getRightX() * slowScale);
-        }else{
-            
-            drive.drive(XBOX_CONTROLLER.getLeftY(), XBOX_CONTROLLER.getLeftX(), XBOX_CONTROLLER.getRightX());
+            fowardBack = 0;
+            leftRight = dpad;
+            rotation = 0;
         }
+        if (XBOX_CONTROLLER.getRightTriggerAxis() >= 0.75) {
+            fowardBack *= slowScale;
+            leftRight *= slowScale;
+            rotation *= slowScale;
+        }
+            
+        drive.drive(fowardBack, leftRight, rotation);
         
     }
     
