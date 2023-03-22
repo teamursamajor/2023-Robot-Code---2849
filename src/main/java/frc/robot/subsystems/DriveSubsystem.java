@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.hal.SimDevice;
@@ -28,12 +29,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
             m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-    private final Spark m_frontLeft = new Spark(3);
-    private final Spark m_rearLeft = new Spark(1);
-    private final Spark m_frontRight = new Spark(2);
-    private final Spark m_rearRight = new Spark(0);
+    private final WPI_VictorSPX m_frontLeft = new WPI_VictorSPX(3);
+    private final WPI_VictorSPX m_rearLeft = new WPI_VictorSPX(1);
+    private final WPI_VictorSPX m_frontRight = new WPI_VictorSPX(2);
+    private final WPI_VictorSPX m_rearRight = new WPI_VictorSPX(0);
 
     public DriveSubsystem() {
+
+        m_frontLeft.setInverted(true);
+        m_rearLeft.setInverted(true);
 
         zeroYaw();
         driverTab.addNumber("Pitch", () -> {
